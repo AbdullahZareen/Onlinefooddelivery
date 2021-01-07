@@ -9,18 +9,19 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
-export default function Home({ navigation }) {
-  //const [isLoading, setLoading] = useState(true)
-  //   const [data, setData] = useState([])
-  //   useEffect(() => {
-  //     fetch('http://192.168.2.102/fypapi/api/resturant/allresturant')
-  //       .then((response) => response.json())
-  //       .then((json) => {
-  //         setData(json)
-  //         console.log(json)
-  //       })
-  //       .catch((error) => alert(error))
-  //   }, [])
+export default function fooditem({ navigation, route }) {
+  const [isLoading, setLoading] = useState(true)
+  const [data, setData] = useState([])
+  const id = route.params.paramkey
+  useEffect(() => {
+    fetch('http://192.168.43.68/fypapi/api/fooditem/allfood?id=2')
+      .then((response) => response.json())
+      .then((json) => {
+        setData(json)
+        console.log(json)
+      })
+      .catch((error) => alert(error))
+  }, [])
   return (
     <ScrollView style={styles.container}>
       <Text

@@ -16,12 +16,12 @@ export default function UserSignup() {
   const [city, oncitychange] = useState('')
 
   const Postdata = () => {
-    if (password == '' && email == '' && number == '') {
+    if (password == '' && email == '') {
       alert('fill the feilds')
     } else {
       try {
         let result = fetch(
-          'http://192.168.2.103/fypapi/api/customers/addcustomers',
+          'http://192.168.2.121/fypapi/api/customers/addcustomers',
           {
             method: 'POST',
             headers: {

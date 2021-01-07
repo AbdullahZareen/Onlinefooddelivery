@@ -1,31 +1,42 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useState, useEffect } from 'react'
-import { Card, Title, Paragraph, ActivityIndicator } from 'react-native-paper'
+import {
+  Card,
+  Title,
+  Paragraph,
+  ActivityIndicator,
+  Searchbar,
+} from 'react-native-paper'
+
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
   TouchableOpacity,
+  Image,
 } from 'react-native'
 export default function Home({ navigation }) {
   const [isLoading, setLoading] = useState(true)
   const [data, setData] = useState([])
   useEffect(() => {
-    fetch('http://192.168.2.139/fypapi/api/resturant/allresturant')
+    fetch('http://192.168.2.121/fypapi/api/resturant/allresturant')
       .then((response) => response.json())
       .then((json) => {
         setData(json)
-        console.log(json)
       })
       .catch((error) => alert(error))
       .finally(setLoading(false))
   }, [])
+
+  const searchresturant = (rname) => {}
   const carddata = (item) => {
     return (
       <View style={{}}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('fooditem')}
+          onPress={() =>
+            navigation.navigate('fooditem', { paramkey: item.rid })
+          }
           style={{
             borderRadius: 5,
             borderColor: 'black',
@@ -39,6 +50,7 @@ export default function Home({ navigation }) {
             />
             <Card.Content>
               <Title>{item.rcname}</Title>
+              <Title>{item.rid}</Title>
               <Paragraph>{item.rccity}</Paragraph>
               <Paragraph>{item.rcemail}</Paragraph>
             </Card.Content>
@@ -49,16 +61,23 @@ export default function Home({ navigation }) {
   }
   return (
     <View style={styles.container}>
-      <Text
-        style={{
-          fontWeight: 'bold',
-          fontSize: 24,
-          marginBottom: 50,
-          textAlign: 'center',
-        }}
-      >
-        RESTURANTS
-      </Text>
+      <View style={{ flexDirection: 'row' }}>
+        <Searchbar style={{ borderRadius: 25, width: 250 }} />
+        <TouchableOpacity
+          style={{
+            margin: 10,
+            width: 50,
+            borderWidth: 1,
+            borderColor: 'black',
+            borderRadius: 10,
+          }}
+        >
+          <Image
+            style={{ width: 50, height: 30, borderRadius: 10 }}
+            source={require('../components/images/schdule.png')}
+          />
+        </TouchableOpacity>
+      </View>
       {isLoading ? (
         <ActivityIndicator size={'large'} />
       ) : (

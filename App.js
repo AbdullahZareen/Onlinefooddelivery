@@ -12,6 +12,7 @@ import Customersignup from './screens/CustomerSignup'
 import Homescreen from './screens/HomeScreen'
 import Orderdetail from './screens/Orderdetail'
 import { UserProvider } from './Context/UserContext'
+//import LoginNavigator from './navigations/LoginStackNavigator'
 
 export default function App() {
   return (
@@ -19,9 +20,10 @@ export default function App() {
       <UserProvider>
         {/* <TabNavigator /> */}
         {/* <RootStackNavigator/> */}
-        {/* <MyDrawerNavigator /> */}
+        <MyDrawerNavigator />
+        {/* <LoginNavigator /> */}
 
-        <Login />
+        {/* <Login /> */}
         {/* <Homescreen /> */}
       </UserProvider>
     </NavigationContainer>

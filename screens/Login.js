@@ -15,13 +15,13 @@ export default function Login({ navigation }) {
   const [data, setData] = useState()
 
   const { a } = useUser()
-
+  console.log(a)
   const loginUser = () => {
     if (data == false) {
       alert('incorrect user mail and password')
     } else {
       let result = fetch(
-        'http://192.168.2.139/Fypapi/api/UserLogin/Login?useremail=' +
+        'http://192.168.2.121/Fypapi/api/UserLogin/Login?useremail=' +
           email +
           '&password=' +
           password +
@@ -64,7 +64,7 @@ export default function Login({ navigation }) {
       </View>
       <View style={styles.signupcont}>
         <Text>Don't have and account yet?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Usersignup')}>
           <Text style={{ color: 'blue' }}>Signup</Text>
         </TouchableOpacity>
       </View>

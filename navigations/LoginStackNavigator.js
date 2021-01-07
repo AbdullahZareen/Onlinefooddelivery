@@ -1,19 +1,16 @@
 import React from 'react'
 import { createStackNavigator, HeaderTitle } from '@react-navigation/stack'
 import HomeScreen from '../screens/HomeScreen'
-import SettingScreen from '../screens/SettingScreen'
-import UserScreen from '../screens/UserScreen'
 import UsersSignup from '../screens/UsersSignup'
 import cussignup from '../screens/CustomerSignup'
 import Login from '../screens/Login'
-import resSignup from '../screens/ResturantSignup'
 import AddFoodScreen from '../screens/AddFoodScreen'
 const Stack = createStackNavigator()
 
-const HomeStackNavigator = () => {
+const LoginNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Login" component={Login} headerMode="none" />
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Usersignup" component={UsersSignup} />
 
@@ -35,4 +32,4 @@ const HomeStackNavigator = () => {
   )
 }
 
-export default HomeStackNavigator
+export default LoginNavigator
