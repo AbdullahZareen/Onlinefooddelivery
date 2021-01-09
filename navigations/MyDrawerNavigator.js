@@ -6,17 +6,17 @@ import HomeScreen from '../screens/HomeScreen'
 import LoginStackNavigator from './LoginStackNavigator'
 import HomeStackNavigator from './HomeStackNavigator'
 import ResturatStackNavigator from './ResturantStackNavigator'
-
-import Login from '../screens/Login'
-
+import { DrawerContent } from '../components/DrawerContent'
 const Drawer = createDrawerNavigator()
 
 const MyDrawerNavigator = () => {
   return (
+    // drawerContent={(props) => <DrawerContent {...props} />}
     <Drawer.Navigator>
       <Drawer.Screen name="Home" component={HomeStackNavigator} />
       <Drawer.Screen name="Login" component={LoginStackNavigator} />
       <Drawer.Screen name="Resturant" component={ResturatStackNavigator} />
+
       {/* <Drawer.Screen name="Notifications" /> */}
     </Drawer.Navigator>
   )

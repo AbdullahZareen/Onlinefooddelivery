@@ -8,33 +8,38 @@ import {
   Image,
 } from 'react-native'
 import { useUser } from '../Context/UserContext'
-
+import AsyncStorage from '@react-native-community/async-storage'
 export default function Login({ navigation }) {
   const [email, onChangeemail] = useState('')
   const [password, onChangePassword] = useState('')
   const [data, setData] = useState()
 
-  const { a } = useUser()
-  console.log(a)
-  const loginUser = () => {
-    if (data == false) {
-      alert('incorrect user mail and password')
-    } else {
-      let result = fetch(
-        'http://192.168.2.121/Fypapi/api/UserLogin/Login?useremail=' +
-          email +
-          '&password=' +
-          password +
-          ''
-      )
-        .then((response) => response.json())
-        .then((json) => {
-          setData(json)
-          console.log(json)
-        })
-    }
-  }
+  const { isLoggedIn, setIsLoggedIn, user, setUser, ipaddress } = useUser()
 
+  const loginUser = ({ navigation }) => {
+    let result = fetch(
+      'http://192.168.2.103/Fypapi/api/UserLogin/Login?useremail=' +
+        email +
+        '&password=' +
+        password +
+        ''
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        setData(json)
+        if (json == false) {
+          alert('incorrect email')
+        } else {
+          alert('you are login')
+        }
+      })
+    // if (data !== false) {
+    //   AsyncStorage.setItem('user', JSON.stringify(data))
+    //   setIsLoggedIn(true)
+    //   setUser(data)
+    // }
+  }
+  console.log(user)
   return (
     <View style={styles.container}>
       <Text></Text>

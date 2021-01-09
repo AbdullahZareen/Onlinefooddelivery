@@ -20,7 +20,7 @@ export default function Home({ navigation }) {
   const [isLoading, setLoading] = useState(true)
   const [data, setData] = useState([])
   useEffect(() => {
-    fetch('http://192.168.2.121/fypapi/api/resturant/allresturant')
+    fetch('http://192.168.2.103/fypapi/api/resturant/allresturant')
       .then((response) => response.json())
       .then((json) => {
         setData(json)
@@ -29,7 +29,6 @@ export default function Home({ navigation }) {
       .finally(setLoading(false))
   }, [])
 
-  const searchresturant = (rname) => {}
   const carddata = (item) => {
     return (
       <View style={{}}>
@@ -43,14 +42,13 @@ export default function Home({ navigation }) {
             borderWidth: 1,
           }}
         >
-          <Card key={item.rid} style={{ margin: 20 }}>
+          <Card key={item.rid.toString()} style={{ margin: 20 }}>
             <Card.Cover
               source={require('../components/images/resturant3.jpg')}
               style={{ width: 310, height: 100 }}
             />
             <Card.Content>
               <Title>{item.rcname}</Title>
-              <Title>{item.rid}</Title>
               <Paragraph>{item.rccity}</Paragraph>
               <Paragraph>{item.rcemail}</Paragraph>
             </Card.Content>
@@ -64,6 +62,7 @@ export default function Home({ navigation }) {
       <View style={{ flexDirection: 'row' }}>
         <Searchbar style={{ borderRadius: 25, width: 250 }} />
         <TouchableOpacity
+          onPress={() => navigation.navigate('schadule')}
           style={{
             margin: 10,
             width: 50,
@@ -83,7 +82,8 @@ export default function Home({ navigation }) {
       ) : (
         <FlatList
           data={data}
-          keyExtractor={({ rid }, index) => rid}
+          keyExtractor={(item) => item.rid.toString()}
+          //  keyExtractor={({ rid }, index) => rid.toString()}
           renderItem={({ item }) => <Text>{carddata(item)}</Text>}
         />
       )}

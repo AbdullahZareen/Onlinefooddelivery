@@ -1,4 +1,5 @@
 import React from 'react'
+import { Text, View, TouchableOpacity, Platform } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
 import HomeScreen from '../screens/HomeScreen'
 import FoodItemScreen from '../screens/FoodItemScreen'
@@ -7,8 +8,12 @@ import { Image } from 'react-native'
 import CartScreen from '../screens/Cart'
 const Stack = createStackNavigator()
 import Orderdetail from '../screens/Orderdetail'
+import Addschadule from '../screens/Addschadulescreen'
+import ShoppingCartIcon from '../Container/ShoppingCartIcon'
+//import { TouchableOpacity } from 'react-native-gesture-handler'
+import Icon from 'react-native-vector-icons/Ionicons'
 
-const HomeStackNavigator = () => {
+const HomeStackNavigator = ({ navigation }) => {
   function ActionBarIcon() {
     return (
       <Image
@@ -17,14 +22,24 @@ const HomeStackNavigator = () => {
       />
     )
   }
-  function cart() {
-    return (
-      <Image
-        source={require('../components/images/cart.jpg')}
-        style={{ width: 40, height: 40, borderRadius: 40 / 2, marginLeft: 15 }}
-      />
-    )
-  }
+  // function Cart() {
+  //   return (
+  //     <View>
+  //       <TouchableOpacity>
+  //         <Image
+  //           source={require('../components/images/cart.jpg')}
+  //           style={{
+  //             width: 40,
+  //             height: 40,
+  //             borderRadius: 40 / 2,
+  //             marginLeft: 15,
+  //           }}
+  //         />
+  //       </TouchableOpacity>
+  //       <ShoppingCartIcon />
+  //     </View>
+  //)
+  // }
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -32,13 +47,22 @@ const HomeStackNavigator = () => {
         component={HomeScreen}
         options={{
           headerTitle: 'Home Activity',
-          headerLeft: (props) => <ActionBarIcon {...props} />,
+          headerLeft: (sss) => (
+            <Icon
+              name={Platform.OS === 'ios' ? 'ios-menu-outline' : 'md-menu'}
+              onPress={() => navigation.openDrawer()}
+              size={30}
+              style={{ marginLeft: 10 }}
+            />
+          ),
+          headerRight: (props) => <ShoppingCartIcon />,
         }}
       />
       <Stack.Screen name="fooditem" component={FoodItemScreen} />
       <Stack.Screen name="BillCal" component={BillScreen} />
       <Stack.Screen name="Cart" component={CartScreen} />
       <Stack.Screen name="Order" component={Orderdetail} />
+      <Stack.Screen name="schadule" component={Addschadule} />
     </Stack.Navigator>
   )
 }

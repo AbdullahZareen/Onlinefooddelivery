@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useState, useEffect } from 'react'
-import { Card, Title, Paragraph } from 'react-native-paper'
+import React, { useState, useEffect, useContext } from 'react'
+import { Card, Title, Paragraph, Button } from 'react-native-paper'
+import { CartContext } from '../Context/CartContext'
 import {
   StyleSheet,
   Text,
@@ -11,27 +12,22 @@ import {
 import { ScrollView } from 'react-native-gesture-handler'
 export default function fooditem({ navigation, route }) {
   const [isLoading, setLoading] = useState(true)
-  const [data, setData] = useState([])
+  const [fooddata, setfoodData] = useState([])
+  const [cart, setCart] = useContext(CartContext)
   const id = route.params.paramkey
+
   useEffect(() => {
-    fetch('http://192.168.43.68/fypapi/api/fooditem/allfood?id=2')
+    fetch('http://192.168.2.103/fypapi/api/fooditem/getfood?id=' + id + '')
       .then((response) => response.json())
       .then((json) => {
-        setData(json)
-        console.log(json)
+        setfoodData(json)
       })
       .catch((error) => alert(error))
   }, [])
-  return (
-    <ScrollView style={styles.container}>
-      <Text
-        style={{
-          fontWeight: 'bold',
-          fontSize: 24,
+  const addtocart = (fname, fprice) => {}
 
-          textAlign: 'center',
-        }}
-      ></Text>
+  const carddata = (item) => {
+    return (
       <View style={{}}>
         <TouchableOpacity
           onPress={() => navigation.navigate('BillCal')}
@@ -41,64 +37,41 @@ export default function fooditem({ navigation, route }) {
             borderWidth: 1,
           }}
         >
-          <Card>
+          <Card key={item.fid.toString()} style={{ margin: 20 }}>
             <Card.Cover
-              source={require('../components/images/burger.jpg')}
-              style={{ width: 310, height: 150 }}
-            />
-            <Card.Content>
-              <Title>zinger Burger</Title>
-              <Paragraph>Price:190</Paragraph>
-              <Paragraph>discount :5%</Paragraph>
-            </Card.Content>
-          </Card>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            borderRadius: 5,
-            borderColor: 'black',
-            borderWidth: 1,
-          }}
-        >
-          <Card>
-            <Card.Cover
-              source={require('../components/images/tikka.jpg')}
-              style={{ width: 310, height: 150 }}
-            />
-            <Card.Content>
-              <Title>Tikka Boti</Title>
-              <Paragraph>Pice:100</Paragraph>
-              <Paragraph>discount :15%</Paragraph>
-            </Card.Content>
-          </Card>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            borderRadius: 5,
-            borderColor: 'black',
-            borderWidth: 1,
-          }}
-        >
-          <Card>
-            <Card.Cover
-              source={require('../components/images/pizza.jpg')}
+              // source={require('' + item.fImagepath + '')}
               style={{ width: 310, height: 100 }}
             />
             <Card.Content>
-              <Title>pizza</Title>
-              <Paragraph>price:550</Paragraph>
-              <Paragraph>discount :10%</Paragraph>
+              <Title>{item.fname}</Title>
+              <Paragraph>Price :{item.fprice}</Paragraph>
+              <Paragraph>Type {item.ftype}</Paragraph>
             </Card.Content>
           </Card>
         </TouchableOpacity>
       </View>
-      {/* <FlatList
-        data={data}
-        keyExtractor={({ rid }, index) => rid}
+    )
+  }
+  console.log(cart)
+  return (
+    <View style={styles.container}>
+      <Text
+        style={{
+          fontWeight: 'bold',
+          fontSize: 24,
+
+          textAlign: 'center',
+        }}
+      ></Text>
+      <View style={{}}></View>
+      <FlatList
+        data={fooddata}
+        //  keyExtractor={(item) => item.fid.toString()}
+        keyExtractor={({ fid }, index) => fid}
         renderItem={({ item }) => <Text>{carddata(item)}</Text>}
-      /> */}
+      />
       <StatusBar backgroundColor="#1c313a" />
-    </ScrollView>
+    </View>
   )
 }
 

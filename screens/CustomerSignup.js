@@ -21,7 +21,7 @@ export default function UserSignup() {
     } else {
       try {
         let result = fetch(
-          'http://192.168.2.121/fypapi/api/customers/addcustomers',
+          'http://192.168.2.103/fypapi/api/customers/addcustomers',
           {
             method: 'POST',
             headers: {
