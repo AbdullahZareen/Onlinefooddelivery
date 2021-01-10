@@ -1,79 +1,65 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+import { useCart } from '../Context/CartContext'
 import { Card, Title, Paragraph } from 'react-native-paper'
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
+import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native'
 import InputSpinner from 'react-native-input-spinner'
-
-export default function Home({ navigation }) {
+export default function calculate({ navigation, route }) {
   const [qval, setqval] = useState(1)
-  //   const [data, setData] = useState([])
-  //   useEffect(() => {
-  //     fetch('http://192.168.2.102/fypapi/api/resturant/allresturant')
-  //       .then((response) => response.json())
-  //       .then((json) => {
-  //         setData(json)
-  //         console.log(json)
-  //       })
-  //       .catch((error) => alert(error))
-  //   }, [])
+  const { cart, setCart } = useCart()
+  const food = route.params.paramkey
+  console.log(cart)
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <Text
         style={{
           fontWeight: 'bold',
           fontSize: 24,
-
           textAlign: 'center',
         }}
       ></Text>
       <View style={{}}>
-        <TouchableOpacity
-          style={{
-            borderRadius: 5,
-            borderColor: 'black',
-            borderWidth: 1,
-          }}
-        >
-          <Card>
-            <Card.Cover
-              source={require('../components/images/burger.jpg')}
-              style={{ width: 310, height: 150 }}
-            />
-            <Card.Content>
-              <Title>zinger Burger</Title>
-              <Paragraph>Price:190</Paragraph>
-              <Paragraph>discount :10%</Paragraph>
-            </Card.Content>
-          </Card>
-        </TouchableOpacity>
+        <Card>
+          <Card.Cover
+            source={require('../components/images/burger.jpg')}
+            style={{ width: 310, height: 150 }}
+          />
+          <Card.Content>
+            <Title>{food.fname}</Title>
+            <Title>{food.fid}</Title>
+            <Paragraph>Price:{food.fprice}</Paragraph>
+            <Paragraph>discount :{food.ftype}</Paragraph>
+          </Card.Content>
+        </Card>
         <InputSpinner
           max={10}
           min={1}
           step={1}
-          // colorMax={'#f04048'}
-          // colorMin={'#40c5f4'}
           onChange={setqval}
           style={{ borderColor: 'black', marginTop: 50, marginLeft: 100 }}
         />
-        <Text>Bill:{qval * 190}</Text>
 
-        <TouchableOpacity
+        <Text>Bill:{qval * food.fprice}</Text>
+
+        {/* <TouchableOpacity
           style={styles.btnbox}
-          onPress={() => navigation.navigate('Cart')}
+          onPress={add(food.fname, food.price)}
         >
           <Text style={styles.btntext}>Add to Cart</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
-
+      <Button
+        title="add"
+        onPress={() =>
+          setCart((current) => [
+            ...current,
+            { id: food.fid, name: food.fname, price: food.fprice, qty: qval },
+          ])
+        }
+      />
+      <Button title="Cart" onPress={() => navigation.navigate('Cart')} />
       <StatusBar backgroundColor="#1c313a" />
-    </ScrollView>
+    </View>
   )
 }
 

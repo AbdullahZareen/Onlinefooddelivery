@@ -9,7 +9,7 @@ import ResturatStackNavigator from './ResturantStackNavigator'
 import { DrawerContent } from '../components/DrawerContent'
 const Drawer = createDrawerNavigator()
 
-const MyDrawerNavigator = () => {
+const ResturantDrawerNavigator = () => {
   const { isLoggedIn, tokken } = useUser()
   console.log(isLoggedIn)
   return (
@@ -19,8 +19,6 @@ const MyDrawerNavigator = () => {
         <LoginStackNavigator />
       ) : (
         <Drawer.Navigator>
-          <Drawer.Screen name="Home" component={HomeStackNavigator} />
-          <Drawer.Screen name="Login" component={LoginStackNavigator} />
           <Drawer.Screen name="Resturant" component={ResturatStackNavigator} />
           {/* <Drawer.Screen name="Notifications" /> */}
         </Drawer.Navigator>
@@ -28,4 +26,4 @@ const MyDrawerNavigator = () => {
     </NavigationContainer>
   )
 }
-export default MyDrawerNavigator
+export default ResturantDrawerNavigator

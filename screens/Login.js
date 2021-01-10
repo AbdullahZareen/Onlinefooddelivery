@@ -31,13 +31,13 @@ export default function Login({ navigation }) {
           alert('incorrect email')
         } else {
           alert('you are login')
+          AsyncStorage.setItem('user', JSON.stringify(data))
+          setIsLoggedIn(true)
+          setUser(data)
         }
       })
-    // if (data !== false) {
-    //   AsyncStorage.setItem('user', JSON.stringify(data))
-    //   setIsLoggedIn(true)
-    //   setUser(data)
-    // }
+    if (data !== false) {
+    }
   }
   console.log(user)
   return (

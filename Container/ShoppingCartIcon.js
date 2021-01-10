@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import { View, Text, StyleSheet, Platform } from 'react-native'
-import { CartContext } from '../Context/CartContext'
-
+import { useCart } from '../Context/CartContext'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { CartProvider } from '../Context/CartContext'
 
 const ShoppingCartIcon = (props) => {
-  const [cart, setCart] = useContext(CartContext)
+  const { cart } = useCart()
   return (
     <View
       style={[

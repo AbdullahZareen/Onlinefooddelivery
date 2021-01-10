@@ -10,8 +10,9 @@ const Stack = createStackNavigator()
 import Orderdetail from '../screens/Orderdetail'
 import Addschadule from '../screens/Addschadulescreen'
 import ShoppingCartIcon from '../Container/ShoppingCartIcon'
-//import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { DrawerContent } from '../components/DrawerContent'
+import ResturantSignup from '../screens/ResturantSignup'
 
 const HomeStackNavigator = ({ navigation }) => {
   function ActionBarIcon() {
@@ -22,24 +23,24 @@ const HomeStackNavigator = ({ navigation }) => {
       />
     )
   }
-  // function Cart() {
-  //   return (
-  //     <View>
-  //       <TouchableOpacity>
-  //         <Image
-  //           source={require('../components/images/cart.jpg')}
-  //           style={{
-  //             width: 40,
-  //             height: 40,
-  //             borderRadius: 40 / 2,
-  //             marginLeft: 15,
-  //           }}
-  //         />
-  //       </TouchableOpacity>
-  //       <ShoppingCartIcon />
-  //     </View>
-  //)
-  // }
+  function Cart() {
+    return (
+      <View>
+        <TouchableOpacity>
+          <Image
+            source={require('../components/images/cart.jpg')}
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 40 / 2,
+              marginLeft: 15,
+            }}
+          />
+        </TouchableOpacity>
+        <ShoppingCartIcon />
+      </View>
+    )
+  }
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -59,6 +60,7 @@ const HomeStackNavigator = ({ navigation }) => {
         }}
       />
       <Stack.Screen name="fooditem" component={FoodItemScreen} />
+      <Stack.Screen name="ResturantSignup" component={ResturantSignup} />
       <Stack.Screen name="BillCal" component={BillScreen} />
       <Stack.Screen name="Cart" component={CartScreen} />
       <Stack.Screen name="Order" component={Orderdetail} />

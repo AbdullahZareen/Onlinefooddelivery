@@ -16,9 +16,11 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native'
+import { useUser } from '../Context/UserContext'
 export default function Home({ navigation }) {
   const [isLoading, setLoading] = useState(true)
   const [data, setData] = useState([])
+  const { user } = useUser()
   useEffect(() => {
     fetch('http://192.168.2.103/fypapi/api/resturant/allresturant')
       .then((response) => response.json())
@@ -28,7 +30,6 @@ export default function Home({ navigation }) {
       .catch((error) => alert(error))
       .finally(setLoading(false))
   }, [])
-
   const carddata = (item) => {
     return (
       <View style={{}}>
@@ -42,17 +43,21 @@ export default function Home({ navigation }) {
             borderWidth: 1,
           }}
         >
-          <Card key={item.rid.toString()} style={{ margin: 20 }}>
-            <Card.Cover
-              source={require('../components/images/resturant3.jpg')}
-              style={{ width: 310, height: 100 }}
-            />
-            <Card.Content>
-              <Title>{item.rcname}</Title>
-              <Paragraph>{item.rccity}</Paragraph>
-              <Paragraph>{item.rcemail}</Paragraph>
-            </Card.Content>
-          </Card>
+          {isLoading ? (
+            <ActivityIndicator size={'large'} />
+          ) : (
+            <Card key={item.rid.toString()} style={{ margin: 20 }}>
+              <Card.Cover
+                source={require('../components/images/resturant3.jpg')}
+                style={{ width: 310, height: 100 }}
+              />
+              <Card.Content>
+                <Title>{item.rcname}</Title>
+                <Paragraph>{item.rccity}</Paragraph>
+                <Paragraph>{item.rcemail}</Paragraph>
+              </Card.Content>
+            </Card>
+          )}
         </TouchableOpacity>
       </View>
     )

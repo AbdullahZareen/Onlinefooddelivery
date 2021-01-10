@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useState, useEffect, useContext } from 'react'
 import { Card, Title, Paragraph, Button } from 'react-native-paper'
-import { CartContext } from '../Context/CartContext'
+
 import {
   StyleSheet,
   Text,
@@ -13,7 +13,6 @@ import { ScrollView } from 'react-native-gesture-handler'
 export default function fooditem({ navigation, route }) {
   const [isLoading, setLoading] = useState(true)
   const [fooddata, setfoodData] = useState([])
-  const [cart, setCart] = useContext(CartContext)
   const id = route.params.paramkey
 
   useEffect(() => {
@@ -24,13 +23,12 @@ export default function fooditem({ navigation, route }) {
       })
       .catch((error) => alert(error))
   }, [])
-  const addtocart = (fname, fprice) => {}
 
   const carddata = (item) => {
     return (
       <View style={{}}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('BillCal')}
+          onPress={() => navigation.navigate('BillCal', { paramkey: item })}
           style={{
             borderRadius: 5,
             borderColor: 'black',
@@ -52,7 +50,6 @@ export default function fooditem({ navigation, route }) {
       </View>
     )
   }
-  console.log(cart)
   return (
     <View style={styles.container}>
       <Text

@@ -1,47 +1,63 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { FlatList } from 'react-native-gesture-handler'
 import { DataTable } from 'react-native-paper'
+import { useCart } from '../Context/CartContext'
 const Screen = () => {
+  const { cart, setCart } = useCart()
   return (
+    // <View>
+    //   <DataTable>
+    //     <DataTable.Header>
+    //       <DataTable.Title></DataTable.Title>
+    //       <DataTable.Title>Food Name</DataTable.Title>
+    //       <DataTable.Title numeric>Price</DataTable.Title>
+    //     </DataTable.Header>
+
+    //     <DataTable.Row>
+    //       <DataTable.Cell numberic>1</DataTable.Cell>
+    //       <DataTable.Cell> Zinger Burger</DataTable.Cell>
+    //       <DataTable.Cell numeric>380</DataTable.Cell>
+    //     </DataTable.Row>
+
+    //     <DataTable.Row>
+    //       <DataTable.Cell>2</DataTable.Cell>
+    //       <DataTable.Cell>Pizza Large</DataTable.Cell>
+    //       <DataTable.Cell numeric>1100</DataTable.Cell>
+    //     </DataTable.Row>
+    //     <DataTable.Row>
+    //       <DataTable.Cell></DataTable.Cell>
+    //       <DataTable.Cell>Delivery charges</DataTable.Cell>
+    //       <DataTable.Cell numeric>120</DataTable.Cell>
+    //     </DataTable.Row>
+    //     <DataTable.Row>
+    //       <DataTable.Cell></DataTable.Cell>
+    //       <DataTable.Cell>Total Bill</DataTable.Cell>
+    //       <DataTable.Cell numeric>1480</DataTable.Cell>
+    //     </DataTable.Row>
+    //   </DataTable>
+    //   <View style={{ marginTop: 100 }}>
+    //     <TouchableOpacity style={styles.btnbox}>
+    //       <Text style={styles.btntext}>Add FoodItem</Text>
+    //     </TouchableOpacity>
+
+    //     <TouchableOpacity style={styles.btnbox}>
+    //       <Text style={styles.btntext}>Place Order</Text>
+    //     </TouchableOpacity>
+    //   </View>
+    // </View>
     <View>
-      <DataTable>
-        <DataTable.Header>
-          <DataTable.Title></DataTable.Title>
-          <DataTable.Title>Food Name</DataTable.Title>
-          <DataTable.Title numeric>Price</DataTable.Title>
-        </DataTable.Header>
-
-        <DataTable.Row>
-          <DataTable.Cell numberic>1</DataTable.Cell>
-          <DataTable.Cell> Zinger Burger</DataTable.Cell>
-          <DataTable.Cell numeric>380</DataTable.Cell>
-        </DataTable.Row>
-
-        <DataTable.Row>
-          <DataTable.Cell>2</DataTable.Cell>
-          <DataTable.Cell>Pizza Large</DataTable.Cell>
-          <DataTable.Cell numeric>1100</DataTable.Cell>
-        </DataTable.Row>
-        <DataTable.Row>
-          <DataTable.Cell></DataTable.Cell>
-          <DataTable.Cell>Delivery charges</DataTable.Cell>
-          <DataTable.Cell numeric>120</DataTable.Cell>
-        </DataTable.Row>
-        <DataTable.Row>
-          <DataTable.Cell></DataTable.Cell>
-          <DataTable.Cell>Total Bill</DataTable.Cell>
-          <DataTable.Cell numeric>1480</DataTable.Cell>
-        </DataTable.Row>
-      </DataTable>
-      <View style={{ marginTop: 100 }}>
-        <TouchableOpacity style={styles.btnbox}>
-          <Text style={styles.btntext}>Add FoodItem</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.btnbox}>
-          <Text style={styles.btntext}>Place Order</Text>
-        </TouchableOpacity>
-      </View>
+      <FlatList
+        data={cart}
+        keyExtractor={(item) => item.id.toString()}
+        //  keyExtractor={({ rid }, index) => rid.toString()}
+        renderItem={({ item }) => (
+          <Text>
+            {item.name}
+            {item.id}
+          </Text>
+        )}
+      />
     </View>
   )
 }

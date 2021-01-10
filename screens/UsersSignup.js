@@ -12,7 +12,7 @@ const Screen = ({ navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('addfooditem')}
+        onPress={() => navigation.navigate('ResturantSignup')}
       >
         <Text>Resturant/Cook SIgn up</Text>
       </TouchableOpacity>
