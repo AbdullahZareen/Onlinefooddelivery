@@ -1,29 +1,50 @@
-import { StatusBar } from 'expo-status-bar'
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
 import 'react-native-gesture-handler'
-
-import MyDrawerNavigator from './navigations/MyDrawerNavigator'
+import React, { useEffect, useState } from 'react'
+import { ActivityIndicator } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native'
+import AsyncStorage from '@react-native-community/async-storage'
+import { UserProvider, useUser } from './Context/UserContext'
 import { CartProvider } from './Context/CartContext'
-import { UserProvider } from './Context/UserContext'
+import LoginStackNavigator from './navigations/LoginStackNavigator'
+import MyDrawerNavigator from './navigations/MyDrawerNavigator'
 import ResturantDrawerNavigator from './navigations/ResutrantDrawerNavigator'
-//import LoginNavigator from './navigations/LoginStackNavigator'
+
 export default function App() {
   return (
     <UserProvider>
       <CartProvider>
-        <MyDrawerNavigator />
-        {/* <ResturantDrawerNavigator /> */}
+        <NavigationContainer>
+          <ChooseNavigation />
+        </NavigationContainer>
       </CartProvider>
     </UserProvider>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})
+function ChooseNavigation() {
+  const { isLoggedIn, setIsLoggedIn, setUser } = useUser()
+
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    AsyncStorage.getItem('user')
+      .then((data) => {
+        if (data) {
+          setUser(JSON.parse(data))
+          setIsLoggedIn(true)
+          return
+        }
+
+        setIsLoggedIn(false)
+      })
+      .then(() => setLoading(false))
+  }, [setUser, setIsLoggedIn])
+
+  if (loading) return <ActivityIndicator />
+
+  if (!isLoggedIn) {
+    return <LoginStackNavigator />
+  }
+
+  return <MyDrawerNavigator />
+}

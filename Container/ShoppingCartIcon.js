@@ -1,10 +1,15 @@
 import React, { useContext } from 'react'
-import { View, Text, StyleSheet, Platform } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+  TouchableOpacity,
+} from 'react-native'
 import { useCart } from '../Context/CartContext'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { CartProvider } from '../Context/CartContext'
 
-const ShoppingCartIcon = (props) => {
+const ShoppingCartIcon = (props, { navigation }) => {
   const { cart } = useCart()
   return (
     <View
@@ -31,11 +36,9 @@ const ShoppingCartIcon = (props) => {
           {cart.length}
         </Text>
       </View>
-      <Icon
-        // onPress={() => props.navigation.navigate()}
-        name="ios-cart"
-        size={30}
-      />
+      <TouchableOpacity>
+        <Icon name="ios-cart" size={30} />
+      </TouchableOpacity>
     </View>
   )
 }

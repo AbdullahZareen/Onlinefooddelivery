@@ -65,6 +65,7 @@ const HomeStackNavigator = ({ navigation }) => {
       <Stack.Screen name="Cart" component={CartScreen} />
       <Stack.Screen name="Order" component={Orderdetail} />
       <Stack.Screen name="schadule" component={Addschadule} />
+      <Stack.Screen name="cart" component={CartScreen} />
     </Stack.Navigator>
   )
 }

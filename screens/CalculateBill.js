@@ -8,7 +8,8 @@ export default function calculate({ navigation, route }) {
   const [qval, setqval] = useState(1)
   const { cart, setCart } = useCart()
   const food = route.params.paramkey
-  console.log(cart)
+  const k = cart.length
+  console.log(k)
   return (
     <View style={styles.container}>
       <Text
@@ -18,12 +19,14 @@ export default function calculate({ navigation, route }) {
           textAlign: 'center',
         }}
       ></Text>
+
       <View style={{}}>
         <Card>
           <Card.Cover
             source={require('../components/images/burger.jpg')}
             style={{ width: 310, height: 150 }}
           />
+
           <Card.Content>
             <Title>{food.fname}</Title>
             <Title>{food.fid}</Title>
@@ -53,7 +56,13 @@ export default function calculate({ navigation, route }) {
         onPress={() =>
           setCart((current) => [
             ...current,
-            { id: food.fid, name: food.fname, price: food.fprice, qty: qval },
+            {
+              key: k + 1,
+              id: food.fid,
+              name: food.fname,
+              price: food.fprice,
+              qty: qval,
+            },
           ])
         }
       />

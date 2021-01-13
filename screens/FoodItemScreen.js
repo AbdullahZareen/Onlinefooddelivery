@@ -9,14 +9,16 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native'
+import { useUser } from '../Context/UserContext'
+
 import { ScrollView } from 'react-native-gesture-handler'
 export default function fooditem({ navigation, route }) {
   const [isLoading, setLoading] = useState(true)
   const [fooddata, setfoodData] = useState([])
   const id = route.params.paramkey
-
+  const { user, setUser, ipaddress } = useUser()
   useEffect(() => {
-    fetch('http://192.168.2.103/fypapi/api/fooditem/getfood?id=' + id + '')
+    fetch('http://' + ipaddress + '/fypapi/api/fooditem/getfood?id=' + id + '')
       .then((response) => response.json())
       .then((json) => {
         setfoodData(json)

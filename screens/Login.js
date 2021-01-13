@@ -12,13 +12,14 @@ import AsyncStorage from '@react-native-community/async-storage'
 export default function Login({ navigation }) {
   const [email, onChangeemail] = useState('')
   const [password, onChangePassword] = useState('')
-  const [data, setData] = useState()
 
   const { isLoggedIn, setIsLoggedIn, user, setUser, ipaddress } = useUser()
 
-  const loginUser = ({ navigation }) => {
+  const loginUser = () => {
     let result = fetch(
-      'http://192.168.2.103/Fypapi/api/UserLogin/Login?useremail=' +
+      'http://' +
+        ipaddress +
+        '/Fypapi/api/UserLogin/Login?useremail=' +
         email +
         '&password=' +
         password +
@@ -26,20 +27,19 @@ export default function Login({ navigation }) {
     )
       .then((response) => response.json())
       .then((json) => {
-        setData(json)
         if (json == false) {
           alert('incorrect email')
-        } else {
-          alert('you are login')
-          AsyncStorage.setItem('user', JSON.stringify(data))
-          setIsLoggedIn(true)
-          setUser(data)
+          return
         }
+
+        AsyncStorage.setItem('user', JSON.stringify(json))
+        setIsLoggedIn(true)
+        setUser(json)
+        console.log('DATA>>>', json)
+        alert('you are login')
       })
-    if (data !== false) {
-    }
   }
-  console.log(user)
+
   return (
     <View style={styles.container}>
       <Text></Text>

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Button,
   Image,
+  Platform,
 } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
 export default function ResturantSignup() {
@@ -18,6 +19,7 @@ export default function ResturantSignup() {
   const [email, onChangeemail] = useState('')
   const [city, oncitychange] = useState('')
   const [image, onImagePick] = useState(null)
+  console.log(image)
   useEffect(() => {
     ;(async () => {
       if (Platform.OS !== 'web') {
@@ -30,10 +32,40 @@ export default function ResturantSignup() {
       }
     })()
   }, [])
+  const Postdata = () => {
+    if (password == '' && email == '') {
+      alert('fill the feilds')
+    } else {
+      try {
+        let result = fetch(
+          'http://' + ipaddress + '/fypapi/api/resturat/addresturant',
+          {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              rcname: name,
+              rcemail: email,
+              rcAddrees: address,
+              rccity: city,
+              rcnumber: number,
+              rpassword: password,
+            }),
+          }
+        )
+        alert('saved')
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  }
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaType: ImagePicker.MediaTypeOptions.Images,
-      base64: true,
+      base64: false,
       allowsEditing: false,
       aspect: [4, 3],
     })
@@ -74,8 +106,11 @@ export default function ResturantSignup() {
   //   }
   return (
     <View style={styles.container}>
-      <Text style={styles.setText}> Resturant Name</Text>
+      <Text>{image}</Text>
+      <Text style={styles.setText}> Owner Name</Text>
       <TextInput style={styles.inputBox} onChangeText={onchangename} />
+      <Text style={styles.setText}>Bussiness Name</Text>
+      <TextInput style={styles.inputBox} />
       <Text style={styles.setText}>Image</Text>
 
       {image !== null ? (

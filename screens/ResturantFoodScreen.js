@@ -6,14 +6,20 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native'
+import { useUser } from '../Context/UserContext'
 import { Card, Paragraph, Title, Button, Action } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Ionicons'
 export default function ResturantFoodScreen() {
   const [data, setData] = useState()
   const id = 2
+  const { user, setUser, ipaddress } = useUser()
   useEffect(() => {
     fetch(
-      'http://192.168.2.103/fypapi/api/resturant/resturantfood?id=' + id + ''
+      'http://' +
+        ipaddress +
+        '/fypapi/api/resturant/resturantfood?id=' +
+        id +
+        ''
     )
       .then((response) => response.json())
       .then((json) => {

@@ -7,7 +7,6 @@ import {
   ActivityIndicator,
   Searchbar,
 } from 'react-native-paper'
-
 import {
   StyleSheet,
   Text,
@@ -20,9 +19,9 @@ import { useUser } from '../Context/UserContext'
 export default function Home({ navigation }) {
   const [isLoading, setLoading] = useState(true)
   const [data, setData] = useState([])
-  const { user } = useUser()
+  const { user, setUser, ipaddress } = useUser()
   useEffect(() => {
-    fetch('http://192.168.2.103/fypapi/api/resturant/allresturant')
+    fetch('http://' + ipaddress + '/fypapi/api/resturant/allresturant')
       .then((response) => response.json())
       .then((json) => {
         setData(json)

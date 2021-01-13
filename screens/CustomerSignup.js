@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native'
+import { useUser } from '../Context/UserContext'
 import DropDownPicker from 'react-native-dropdown-picker'
 export default function UserSignup() {
   const [name, onchangename] = useState('')
@@ -14,14 +15,13 @@ export default function UserSignup() {
   const [password, onchangepassword] = useState('')
   const [email, onChangeemail] = useState('')
   const [city, oncitychange] = useState('')
-
   const Postdata = () => {
     if (password == '' && email == '') {
       alert('fill the feilds')
     } else {
       try {
         let result = fetch(
-          'http://192.168.2.103/fypapi/api/customers/addcustomers',
+          'http://' + ipaddress + '/fypapi/api/customers/addcustomer',
           {
             method: 'POST',
             headers: {
@@ -38,13 +38,13 @@ export default function UserSignup() {
             }),
           }
         )
-        console.log(result)
         alert('saved')
       } catch (e) {
         console.log(e)
       }
     }
   }
+  const { user, setUser, ipaddress } = useUser()
   return (
     <View style={styles.container}>
       <Text style={styles.setText}>Name</Text>

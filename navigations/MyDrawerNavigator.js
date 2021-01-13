@@ -1,31 +1,48 @@
 import React from 'react'
-import { createDrawerNavigator } from '@react-navigation/drawer'
+import { ActivityIndicator } from 'react-native'
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer'
 //import TabNavigator from './TabNavigator'
-import { NavigationContainer } from '@react-navigation/native'
 import { useUser } from '../Context/UserContext'
 import LoginStackNavigator from './LoginStackNavigator'
 import HomeStackNavigator from './HomeStackNavigator'
 import ResturatStackNavigator from './ResturantStackNavigator'
 import { DrawerContent } from '../components/DrawerContent'
+import AsyncStorage from '@react-native-community/async-storage'
+import ProfileScreen from '../screens/ProfileScreen'
+import { NavigationContainer } from '@react-navigation/native'
+
 const Drawer = createDrawerNavigator()
 
-const MyDrawerNavigator = () => {
-  const { isLoggedIn, tokken } = useUser()
-  console.log(isLoggedIn)
+export default function MyDrawerNavigator() {
+  const { setUser, setIsLoggedIn } = useUser()
+
+  const logoutAction = async () => {
+    await AsyncStorage.removeItem('user')
+    setUser(null)
+    setIsLoggedIn(false)
+  }
+
   return (
     // drawerContent={(props) => <DrawerContent {...props} />}
-    <NavigationContainer>
-      {!isLoggedIn ? (
-        <LoginStackNavigator />
-      ) : (
-        <Drawer.Navigator>
-          <Drawer.Screen name="Home" component={HomeStackNavigator} />
-          <Drawer.Screen name="Login" component={LoginStackNavigator} />
-          <Drawer.Screen name="Resturant" component={ResturatStackNavigator} />
-          {/* <Drawer.Screen name="Notifications" /> */}
-        </Drawer.Navigator>
-      )}
-    </NavigationContainer>
+    <Drawer.Navigator
+      drawerContent={(props) => {
+        return (
+          <DrawerContentScrollView {...props}>
+            <DrawerItemList {...props} />
+            <DrawerItem label="Logout" onPress={logoutAction} />
+          </DrawerContentScrollView>
+        )
+      }}
+    >
+      <Drawer.Screen name="Home" component={HomeStackNavigator} />
+      <Drawer.Screen name="Login" component={LoginStackNavigator} />
+      <Drawer.Screen name="Resturant" component={ResturatStackNavigator} />
+      <Drawer.Screen name="Profile" component={ProfileScreen} />
+    </Drawer.Navigator>
   )
 }
-export default MyDrawerNavigator
