@@ -16,7 +16,8 @@ import {
   Image,
 } from 'react-native'
 import { useUser } from '../Context/UserContext'
-export default function Home({ navigation }) {
+import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view'
+export default function Home({ navigation, route }) {
   const [isLoading, setLoading] = useState(true)
   const [data, setData] = useState([])
   const { user, setUser, ipaddress } = useUser()
@@ -40,6 +41,7 @@ export default function Home({ navigation }) {
             borderRadius: 5,
             borderColor: 'black',
             borderWidth: 1,
+            width: 320,
           }}
         >
           {isLoading ? (
@@ -47,8 +49,8 @@ export default function Home({ navigation }) {
           ) : (
             <Card key={item.rid.toString()} style={{ margin: 20 }}>
               <Card.Cover
-                source={require('../components/images/resturant3.jpg')}
-                style={{ width: 310, height: 100 }}
+                source={require('../components/images/resturant2.jpg')}
+                style={{ width: 280, height: 100 }}
               />
               <Card.Content>
                 <Title>{item.rcname}</Title>
@@ -62,37 +64,39 @@ export default function Home({ navigation }) {
     )
   }
   return (
-    <View style={styles.container}>
-      <View style={{ flexDirection: 'row' }}>
-        <Searchbar style={{ borderRadius: 25, width: 250 }} />
-        <TouchableOpacity
-          onPress={() => navigation.navigate('schadule')}
-          style={{
-            margin: 10,
-            width: 50,
-            borderWidth: 1,
-            borderColor: 'black',
-            borderRadius: 10,
-          }}
-        >
-          <Image
-            style={{ width: 50, height: 30, borderRadius: 10 }}
-            source={require('../components/images/schdule.png')}
+    <KeyboardAvoidingScrollView behavoir="position">
+      <View style={styles.container}>
+        <View style={{ flexDirection: 'row' }}>
+          <Searchbar style={{ borderRadius: 25, width: 250 }} />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('showschadule')}
+            style={{
+              margin: 10,
+              width: 50,
+              borderWidth: 1,
+              borderColor: 'black',
+              borderRadius: 10,
+            }}
+          >
+            <Image
+              style={{ width: 50, height: 30, borderRadius: 10 }}
+              source={require('../components/images/schdule.png')}
+            />
+          </TouchableOpacity>
+        </View>
+        {isLoading ? (
+          <ActivityIndicator size={'large'} />
+        ) : (
+          <FlatList
+            data={data}
+            keyExtractor={(item) => item.rid.toString()}
+            //  keyExtractor={({ rid }, index) => rid.toString()}
+            renderItem={({ item }) => <Text>{carddata(item)}</Text>}
           />
-        </TouchableOpacity>
+        )}
+        <StatusBar backgroundColor="#1c313a" />
       </View>
-      {isLoading ? (
-        <ActivityIndicator size={'large'} />
-      ) : (
-        <FlatList
-          data={data}
-          keyExtractor={(item) => item.rid.toString()}
-          //  keyExtractor={({ rid }, index) => rid.toString()}
-          renderItem={({ item }) => <Text>{carddata(item)}</Text>}
-        />
-      )}
-      <StatusBar backgroundColor="#1c313a" />
-    </View>
+    </KeyboardAvoidingScrollView>
   )
 }
 

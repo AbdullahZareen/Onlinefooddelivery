@@ -13,7 +13,12 @@ import ShoppingCartIcon from '../Container/ShoppingCartIcon'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { DrawerContent } from '../components/DrawerContent'
 import ResturantSignup from '../screens/ResturantSignup'
-
+import Schadule from '../screens/Schedule'
+import ScheduleFood from '../screens/ScheduleFood'
+import showschadule from '../screens/ShowSchadule'
+import PickFood from '../screens/PickFood'
+import NotificationScreen from '../screens/NotificatonsScreen'
+import Order from '../screens/Order'
 const HomeStackNavigator = ({ navigation }) => {
   function ActionBarIcon() {
     return (
@@ -64,8 +69,49 @@ const HomeStackNavigator = ({ navigation }) => {
       <Stack.Screen name="BillCal" component={BillScreen} />
       <Stack.Screen name="Cart" component={CartScreen} />
       <Stack.Screen name="Order" component={Orderdetail} />
-      <Stack.Screen name="schadule" component={Addschadule} />
+
+      <Stack.Screen
+        name="schadule"
+        component={Schadule}
+        options={{
+          headerTitle: 'Add Schadule',
+          headerRight: () => (
+            <TouchableOpacity>
+              <Text
+                style={{ marginRight: 20, fontWeight: 'bold', fontSize: 18 }}
+              >
+                Save
+              </Text>
+            </TouchableOpacity>
+          ),
+        }}
+      />
       <Stack.Screen name="cart" component={CartScreen} />
+      <Stack.Screen
+        name="Resturant"
+        component={ScheduleFood}
+        options={{
+          headerTitle: 'Food Items',
+        }}
+      />
+      <Stack.Screen
+        name="showschadule"
+        component={showschadule}
+        options={{
+          headerTitle: 'Week Schadule',
+          headerRight: () => (
+            <TouchableOpacity>
+              <Text
+                style={{ marginRight: 20, fontWeight: 'bold', fontSize: 18 }}
+              >
+                Activate
+              </Text>
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Stack.Screen name="pickfood" component={PickFood} />
+      <Stack.Screen name="order" component={Order} />
     </Stack.Navigator>
   )
 }

@@ -21,7 +21,7 @@ export default function UserSignup() {
     } else {
       try {
         let result = fetch(
-          'http://' + ipaddress + '/fypapi/api/customers/addcustomer',
+          'http://' + ipaddress + '/fypapi/api/customers/addcustomers',
           {
             method: 'POST',
             headers: {

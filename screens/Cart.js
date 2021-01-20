@@ -9,20 +9,39 @@ import {
 import { DataTable } from 'react-native-paper'
 import { useCart } from '../Context/CartContext'
 import { useUser } from '../Context/UserContext'
-
+import { Card, Paragraph, Title, Button } from 'react-native-paper'
 const Screen = () => {
   const { cart, setCart } = useCart()
   const { user, setUser, ipaddress } = useUser()
   const [result, setResult] = useState()
+
   function tabledata(item) {
     return (
-      <DataTable>
-        <DataTable.Row>
-          <DataTable.Cell numeric>{item.key}</DataTable.Cell>
-          <DataTable.Cell> {item.name}</DataTable.Cell>
-          <DataTable.Cell numeric>{item.price}</DataTable.Cell>
-        </DataTable.Row>
-      </DataTable>
+      <View
+        style={{
+          alignItems: 'center',
+          width: 350,
+        }}
+      >
+        <Card style={{ width: 350 }}>
+          {/* <Card.Cover
+            // source={require('' + item.fImagepath + '')}
+            style={{ width: 310, height: 100 }}
+          /> */}
+          <Card.Content style={{}}>
+            <Title style={{ marginRight: 30 }}>
+              {item.key}: {item.name}
+            </Title>
+            <Title style={{ marginRight: 30 }}>Price :{item.price}</Title>
+            <Title style={{ marginRight: 30 }}>Qty :{item.qty}</Title>
+            <Title>Total:{item.price * item.qty}</Title>
+            <Card.Actions>
+              <Button>Edit</Button>
+              <Button>Remove</Button>
+            </Card.Actions>
+          </Card.Content>
+        </Card>
+      </View>
     )
   }
   const order = () => {
@@ -42,54 +61,43 @@ const Screen = () => {
       })
         .then((response) => response.json())
         .then((json) => {
-          setResult(json)
+          orderdetail(json)
         })
         .catch((error) => alert(error)),
         alert('saved')
     } catch (e) {
       console.log(e)
-      for (let i = 0; i < cart.length; i++) {
-        try {
-          fetch('http://' + ipaddress + '/fypapi/api/order/addorderdetail', {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              oid: result,
-              foodquantity: cart[i].qty,
-              fid: cart[i].id,
-              // odate: '2020-10-13T00:00:00',
-              // subscribtion: false,
-              // otime: '12:00:00',
-              // cid: user.u_id,
-            }),
-          })
-            .then((response) => response.json())
-            .then((json) => {
-              setResult(json)
-            })
-            .catch((error) => alert(error)),
-            alert('saved')
-        } catch (e) {
-          console.log(e)
-        }
-      }
     }
   }
-  console.log(cart[0].id)
-  console.log(cart[0].qty)
+  function orderdetail(json) {
+    for (let i = 0; i < cart.length; i++) {
+      try {
+        fetch('http://' + ipaddress + '/fypapi/api/order/Addorderdetail', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            oid: json,
+            fid: cart[i].id,
+            foodqantity: cart[i].qty,
+          }),
+        })
+        alert('saved')
 
+        console.log('fid>>>', cart[i].id)
+        console.log('qty>>>', cart[i].qty)
+        console.log('oi>>>>>', json)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    return
+  }
+  console.log(cart)
   return (
     <View>
-      <DataTable>
-        <DataTable.Header>
-          <DataTable.Title></DataTable.Title>
-          <DataTable.Title>Food Name</DataTable.Title>
-          <DataTable.Title numeric>Price</DataTable.Title>
-        </DataTable.Header>
-      </DataTable>
       <FlatList
         data={cart}
         keyExtractor={(item) => item.id.toString()}
@@ -97,7 +105,10 @@ const Screen = () => {
         renderItem={({ item }) => <Text>{tabledata(item)}</Text>}
       />
       <TouchableOpacity style={styles.btnbox} onPress={() => order()}>
-        <Text>Order</Text>
+        <Text style={styles.btntext}>Order</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.btnbox} onPress={() => order()}>
+        <Text style={styles.btntext}>Total Bill</Text>
       </TouchableOpacity>
     </View>
   )

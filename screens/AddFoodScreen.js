@@ -54,7 +54,7 @@ export default function AddFoodScreen() {
       <Text style={styles.setText}>Cooking Time</Text>
       <TextInput style={styles.inputBox} />
       <TouchableOpacity style={styles.btnbox}>
-        <Text style={styles.btntext}>Create Account</Text>
+        <Text style={styles.btntext}>Add Food</Text>
       </TouchableOpacity>
     </View>
   )

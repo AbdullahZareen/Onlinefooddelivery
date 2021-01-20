@@ -9,6 +9,7 @@ import {
   Button,
   Image,
   Platform,
+  ScrollView,
 } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
 export default function ResturantSignup() {
@@ -105,12 +106,7 @@ export default function ResturantSignup() {
   //     }
   //   }
   return (
-    <View style={styles.container}>
-      <Text>{image}</Text>
-      <Text style={styles.setText}> Owner Name</Text>
-      <TextInput style={styles.inputBox} onChangeText={onchangename} />
-      <Text style={styles.setText}>Bussiness Name</Text>
-      <TextInput style={styles.inputBox} />
+    <ScrollView style={styles.container}>
       <Text style={styles.setText}>Image</Text>
 
       {image !== null ? (
@@ -124,6 +120,11 @@ export default function ResturantSignup() {
         title="Browse Image"
         onPress={pickImage}
       />
+      <Text>{image}</Text>
+      <Text style={styles.setText}> Owner Name</Text>
+      <TextInput style={styles.inputBox} onChangeText={onchangename} />
+      <Text style={styles.setText}>Bussiness Name</Text>
+      <TextInput style={styles.inputBox} />
 
       <Text style={styles.setText}>Phone Number</Text>
       <TextInput style={styles.inputBox} onChangeText={onchangenumber} />
@@ -131,7 +132,24 @@ export default function ResturantSignup() {
       <TextInput style={styles.inputBox} onChangeText={onChangeemail} />
       <Text style={styles.setText}>Address</Text>
       <TextInput style={styles.inputBox} onChangeText={onchangeadress} />
-
+      <Text style={styles.setText}>Type</Text>
+      <DropDownPicker
+        items={[
+          { label: 'Resturant', value: 'Islamabad', hidden: true },
+          { label: 'Cook', value: 'Rawalpindi' },
+        ]}
+        containerStyle={{ height: 50 }}
+        style={{
+          backgroundColor: '#fafafa',
+          width: 350,
+          justifyContent: 'center',
+        }}
+        itemStyle={{
+          justifyContent: 'flex-start',
+        }}
+        dropDownStyle={{ backgroundColor: '#fafafa' }}
+        onChangeItem={(city) => oncitychange(city.value)}
+      />
       <Text style={styles.setText}>City</Text>
       <DropDownPicker
         items={[
@@ -141,10 +159,10 @@ export default function ResturantSignup() {
           { label: 'Lahore', value: 'Lahore' },
           { label: 'Haripur', value: 'Haripur' },
         ]}
-        containerStyle={{ height: 40 }}
+        containerStyle={{ height: 50 }}
         style={{
           backgroundColor: '#fafafa',
-          width: 300,
+          width: 350,
           justifyContent: 'center',
         }}
         itemStyle={{
@@ -163,7 +181,7 @@ export default function ResturantSignup() {
       <TouchableOpacity style={styles.btnbox}>
         <Text style={styles.btntext}>SignUp</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   )
 }
 

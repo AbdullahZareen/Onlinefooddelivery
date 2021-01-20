@@ -8,14 +8,17 @@ import { CartProvider } from './Context/CartContext'
 import LoginStackNavigator from './navigations/LoginStackNavigator'
 import MyDrawerNavigator from './navigations/MyDrawerNavigator'
 import ResturantDrawerNavigator from './navigations/ResutrantDrawerNavigator'
+import { ScheduleProvider } from './Context/Schedulecontext'
 
 export default function App() {
   return (
     <UserProvider>
       <CartProvider>
-        <NavigationContainer>
-          <ChooseNavigation />
-        </NavigationContainer>
+        <ScheduleProvider>
+          <NavigationContainer>
+            <ChooseNavigation />
+          </NavigationContainer>
+        </ScheduleProvider>
       </CartProvider>
     </UserProvider>
   )
