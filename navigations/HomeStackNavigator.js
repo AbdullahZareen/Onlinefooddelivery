@@ -8,7 +8,6 @@ import { Image } from 'react-native'
 import CartScreen from '../screens/Cart'
 const Stack = createStackNavigator()
 import Orderdetail from '../screens/Orderdetail'
-import Addschadule from '../screens/Addschadulescreen'
 import ShoppingCartIcon from '../Container/ShoppingCartIcon'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { DrawerContent } from '../components/DrawerContent'

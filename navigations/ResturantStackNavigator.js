@@ -3,9 +3,9 @@ import { createStackNavigator } from '@react-navigation/stack'
 import HomeScreen from '../screens/HomeScreen'
 import FoodItemScreen from '../screens/FoodItemScreen'
 import { Image } from 'react-native'
-import AddFoodScreen from '../screens/AddFoodScreen'
-import ResturantFoodScreen from '../screens/ResturantFoodScreen'
-import ResturantFoodUpdate from '../screens/ResutrantFoodUpdate'
+import AddFoodScreen from '../ResturantScreen/AddFoodScreen'
+import ResturantFoodScreen from '../ResturantScreen/ResturantFoodScreen'
+import ResturantFoodUpdate from '../ResturantScreen/ResutrantFoodUpdate'
 
 const Stack = createStackNavigator()
 

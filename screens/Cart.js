@@ -37,7 +37,13 @@ const Screen = () => {
             <Title>Total:{item.price * item.qty}</Title>
             <Card.Actions>
               <Button>Edit</Button>
-              <Button>Remove</Button>
+              <Button
+                onPress={() => {
+                  cart.splice(item, 1)
+                }}
+              >
+                Remove
+              </Button>
             </Card.Actions>
           </Card.Content>
         </Card>
@@ -95,7 +101,6 @@ const Screen = () => {
     }
     return
   }
-  console.log(cart)
   return (
     <View>
       <FlatList

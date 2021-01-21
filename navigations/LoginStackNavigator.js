@@ -4,7 +4,6 @@ import HomeScreen from '../screens/HomeScreen'
 import UsersSignup from '../screens/UsersSignup'
 import cussignup from '../screens/CustomerSignup'
 import Login from '../screens/Login'
-import AddFoodScreen from '../screens/AddFoodScreen'
 const Stack = createStackNavigator()
 
 const LoginNavigator = () => {
@@ -19,13 +18,6 @@ const LoginNavigator = () => {
         component={cussignup}
         options={{
           headerTitle: 'Customer Signup',
-        }}
-      />
-      <Stack.Screen
-        name="addfooditem"
-        component={AddFoodScreen}
-        options={{
-          headerTitle: 'Add Food Item',
         }}
       />
     </Stack.Navigator>
