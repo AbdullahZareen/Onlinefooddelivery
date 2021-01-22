@@ -10,8 +10,16 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
+import { useUser } from '../Context/UserContext'
+
 export default function AddFoodScreen() {
   const [image, onImagePick] = useState(null)
+  const [fname, setfname] = useState()
+  const [type, settype] = useState()
+  const { ipaddress } = useUser()
+  const [cook, setcook] = useState()
+  const [price, setprice] = useState()
+  const [discount, setdiscount] = useState()
   useEffect(() => {
     ;(async () => {
       if (Platform.OS !== 'web') {
@@ -36,6 +44,32 @@ export default function AddFoodScreen() {
       onImagePick(result.uri)
     }
   }
+  const Postdata = () => {
+    try {
+      let result = fetch(
+        'http://' + ipaddress + '/fypapi/api/fooditem/addfood',
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            FName: fname,
+            FImage: image,
+            Ftype: type,
+            fprice: price,
+            fdiscount: discount,
+            fcooktime: cook,
+            rid: 2,
+          }),
+        }
+      )
+      alert('saved')
+    } catch (e) {
+      console.log(e)
+    }
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.setText}>Image</Text>
@@ -44,16 +78,16 @@ export default function AddFoodScreen() {
       ) : null}
       <Button style={{ Color: '#1c313a' }} title="Browse" onPress={pickImage} />
       <Text style={styles.setText}>Food Name</Text>
-      <TextInput style={styles.inputBox} />
+      <TextInput style={styles.inputBox} onChangeText={setfname} />
       <Text style={styles.setText}>Type</Text>
-      <TextInput style={styles.inputBox} />
+      <TextInput style={styles.inputBox} onChangeText={settype} />
       <Text style={styles.setText}>Pirce</Text>
-      <TextInput style={styles.inputBox} />
+      <TextInput style={styles.inputBox} onChangeText={setprice} />
       <Text style={styles.setText}>Discount</Text>
-      <TextInput style={styles.inputBox} />
+      <TextInput style={styles.inputBox} onChangeText={setdiscount} />
       <Text style={styles.setText}>Cooking Time</Text>
-      <TextInput style={styles.inputBox} />
-      <TouchableOpacity style={styles.btnbox}>
+      <TextInput style={styles.inputBox} onChangeText={setcook} />
+      <TouchableOpacity style={styles.btnbox} onPress={Postdata}>
         <Text style={styles.btntext}>Add Food</Text>
       </TouchableOpacity>
     </View>

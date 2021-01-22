@@ -27,12 +27,17 @@ export default function ResturantFoodScreen({ navigation }) {
       })
       .catch((error) => alert(error))
   }, [])
+  console.log(data)
+  let img =
+    'file:/data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FNavigation-5bd503d6-c573-465d-9783-d01b1739701e/ImagePicker/b089579d-54cf-4a62-ada3-63654db6a6bb.jpg'
   const carddata = (item) => {
     return (
       <View style={{}}>
         <Card key={item.fid.toString()} style={{ margin: 20 }}>
           <Card.Cover
-            source={require('../components/images/biryani.jpg')}
+            source={{
+              uri: item.fImagepath,
+            }}
             style={{ width: 300, height: 100 }}
           />
           <Card.Content>

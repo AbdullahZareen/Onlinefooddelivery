@@ -1,6 +1,5 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import UserScreen from '../screens/UserScreen'
 import Status from '../DboyScreen/Status'
 import Status1 from '../DboyScreen/Status1'
 import Deliveries from '../DboyScreen/Deliveries'

@@ -11,12 +11,10 @@ import Orderdetail from '../screens/Orderdetail'
 import ShoppingCartIcon from '../Container/ShoppingCartIcon'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { DrawerContent } from '../components/DrawerContent'
-import ResturantSignup from '../screens/ResturantSignup'
 import Schadule from '../screens/Schedule'
 import ScheduleFood from '../screens/ScheduleFood'
 import showschadule from '../screens/ShowSchadule'
 import PickFood from '../screens/PickFood'
-import NotificationScreen from '../screens/NotificatonsScreen'
 import Order from '../screens/Order'
 const HomeStackNavigator = ({ navigation }) => {
   function ActionBarIcon() {
@@ -64,7 +62,6 @@ const HomeStackNavigator = ({ navigation }) => {
         }}
       />
       <Stack.Screen name="fooditem" component={FoodItemScreen} />
-      <Stack.Screen name="ResturantSignup" component={ResturantSignup} />
       <Stack.Screen name="BillCal" component={BillScreen} />
       <Stack.Screen name="Cart" component={CartScreen} />
       <Stack.Screen name="Order" component={Orderdetail} />

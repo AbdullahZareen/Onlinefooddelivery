@@ -12,34 +12,37 @@ import {
   ScrollView,
 } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
+import { useUser } from '../Context/UserContext'
 export default function ResturantSignup() {
-  const [name, onchangename] = useState('')
+  const [oname, onchangeoname] = useState('')
+  const [bname, onchangebname] = useState('')
   const [number, onchangenumber] = useState('')
   const [address, onchangeadress] = useState('')
   const [password, onchangepassword] = useState('')
   const [email, onChangeemail] = useState('')
   const [city, oncitychange] = useState('')
+  const [type, onchangetype] = useState('')
   const [image, onImagePick] = useState(null)
-  console.log(image)
+  const { ipaddress } = useUser()
   useEffect(() => {
-    ;(async () => {
-      if (Platform.OS !== 'web') {
-        const {
-          status,
-        } = await ImagePicker.requestMediaLibraryPermissionsAsync()
-        if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!')
-        }
-      }
-    })()
+    // ;(async () => {
+    //   if (Platform.OS !== 'web') {
+    //     const {
+    //       status,
+    //     } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+    //     if (status !== 'granted') {
+    //       alert('Sorry, we need camera roll permissions to make this work!')
+    //     }
+    //   }
+    // })()
   }, [])
   const Postdata = () => {
-    if (password == '' && email == '') {
+    if ((password == '') | (email == '') | (image == null)) {
       alert('fill the feilds')
     } else {
       try {
         let result = fetch(
-          'http://' + ipaddress + '/fypapi/api/resturat/addresturant',
+          'http://' + ipaddress + '/fypapi/api/resturant/addresturant',
           {
             method: 'POST',
             headers: {
@@ -47,12 +50,14 @@ export default function ResturantSignup() {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              rcname: name,
-              rcemail: email,
-              rcAddrees: address,
+              rcname: bname,
+              rcaddress: address,
               rccity: city,
-              rcnumber: number,
+              rcemail: email,
               rpassword: password,
+              rcImage: image,
+              Category: type,
+              ownername: oname,
             }),
           }
         )
@@ -75,36 +80,6 @@ export default function ResturantSignup() {
       onImagePick(result.uri)
     }
   }
-
-  //   const Postdata = () => {
-  //     if (password == '' && email == '' && number == '') {
-  //       alert('fill the feilds')
-  //     } else {
-  //       try {
-  //         let result = fetch(
-  //           'http://192.168.2.103/fypapi/api/customers/addcustomers',
-  //           {
-  //             method: 'POST',
-  //             headers: {
-  //               Accept: 'application/json',
-  //               'Content-Type': 'application/json',
-  //             },
-  //             body: JSON.stringify({
-  //               cname: name,
-  //               cnumber: number,
-  //               cemail: email,
-  //               cAddrees: address,
-  //               cpassward: password,
-  //               ccity: city,
-  //             }),
-  //           }
-  //         )
-  //       console.log(result)
-  //       } catch (e) {
-  //         console.log(e)
-  //       }
-  //     }
-  //   }
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.setText}>Image</Text>
@@ -120,11 +95,10 @@ export default function ResturantSignup() {
         title="Browse Image"
         onPress={pickImage}
       />
-      <Text>{image}</Text>
       <Text style={styles.setText}> Owner Name</Text>
-      <TextInput style={styles.inputBox} onChangeText={onchangename} />
+      <TextInput style={styles.inputBox} onChangeText={onchangeoname} />
       <Text style={styles.setText}>Bussiness Name</Text>
-      <TextInput style={styles.inputBox} />
+      <TextInput style={styles.inputBox} onChangeText={onchangebname} />
 
       <Text style={styles.setText}>Phone Number</Text>
       <TextInput style={styles.inputBox} onChangeText={onchangenumber} />
@@ -138,6 +112,7 @@ export default function ResturantSignup() {
           { label: 'Resturant', value: 'Islamabad', hidden: true },
           { label: 'Cook', value: 'Rawalpindi' },
         ]}
+        placeholder="select type"
         containerStyle={{ height: 50 }}
         style={{
           backgroundColor: '#fafafa',
@@ -148,7 +123,7 @@ export default function ResturantSignup() {
           justifyContent: 'flex-start',
         }}
         dropDownStyle={{ backgroundColor: '#fafafa' }}
-        onChangeItem={(city) => oncitychange(city.value)}
+        onChangeItem={(city) => onchangetype(city.value)}
       />
       <Text style={styles.setText}>City</Text>
       <DropDownPicker
@@ -159,11 +134,12 @@ export default function ResturantSignup() {
           { label: 'Lahore', value: 'Lahore' },
           { label: 'Haripur', value: 'Haripur' },
         ]}
+        placeholder="select city"
         containerStyle={{ height: 50 }}
         style={{
-          backgroundColor: '#fafafa',
           width: 350,
           justifyContent: 'center',
+          color: 'black',
         }}
         itemStyle={{
           justifyContent: 'flex-start',
@@ -178,7 +154,7 @@ export default function ResturantSignup() {
         secureTextEntry={true}
         onChangeText={onchangepassword}
       />
-      <TouchableOpacity style={styles.btnbox}>
+      <TouchableOpacity style={styles.btnbox} onPress={Postdata}>
         <Text style={styles.btntext}>SignUp</Text>
       </TouchableOpacity>
     </ScrollView>
