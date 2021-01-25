@@ -30,6 +30,7 @@ export default function Home({ navigation, route }) {
       .catch((error) => alert(error))
       .finally(setLoading(false))
   }, [])
+  console.log(data)
   const carddata = (item) => {
     return (
       <View style={{}}>
@@ -49,7 +50,7 @@ export default function Home({ navigation, route }) {
           ) : (
             <Card key={item.rid.toString()} style={{ margin: 20 }}>
               <Card.Cover
-                source={require('../components/images/resturant2.jpg')}
+                source={{ uri: item.rcImage }}
                 style={{ width: 280, height: 100 }}
               />
               <Card.Content>
@@ -89,8 +90,7 @@ export default function Home({ navigation, route }) {
         ) : (
           <FlatList
             data={data}
-            keyExtractor={(item) => item.rid.toString()}
-            //  keyExtractor={({ rid }, index) => rid.toString()}
+            keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => <Text>{carddata(item)}</Text>}
           />
         )}

@@ -16,22 +16,11 @@ export default function AddFoodScreen() {
   const [image, onImagePick] = useState(null)
   const [fname, setfname] = useState()
   const [type, settype] = useState()
-  const { ipaddress } = useUser()
+  const { user, ipaddress } = useUser()
   const [cook, setcook] = useState()
   const [price, setprice] = useState()
   const [discount, setdiscount] = useState()
-  useEffect(() => {
-    ;(async () => {
-      if (Platform.OS !== 'web') {
-        const {
-          status,
-        } = await ImagePicker.requestMediaLibraryPermissionsAsync()
-        if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!')
-        }
-      }
-    })()
-  }, [])
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaType: ImagePicker.MediaTypeOptions.Images,
@@ -46,25 +35,22 @@ export default function AddFoodScreen() {
   }
   const Postdata = () => {
     try {
-      let result = fetch(
-        'http://' + ipaddress + '/fypapi/api/fooditem/addfood',
-        {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            FName: fname,
-            FImage: image,
-            Ftype: type,
-            fprice: price,
-            fdiscount: discount,
-            fcooktime: cook,
-            rid: 2,
-          }),
-        }
-      )
+      fetch('http://' + ipaddress + '/fypapi/api/fooditem/addfood', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          FName: fname,
+          FImage: image,
+          Ftype: type,
+          fprice: price,
+          fdiscount: discount,
+          fcooktime: cook,
+          rid: user.u_id,
+        }),
+      })
       alert('saved')
     } catch (e) {
       console.log(e)

@@ -37,7 +37,7 @@ export default function fooditem({ navigation, route }) {
         >
           <Card style={{ margin: 20, width: 250 }}>
             <Card.Cover
-              source={require('../components/images/pizza.jpg')}
+              source={{ uri: item.Imagepath }}
               style={{ width: 250, height: 100 }}
             />
             <Card.Content style={{}}>

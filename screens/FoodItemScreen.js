@@ -39,7 +39,7 @@ export default function fooditem({ navigation, route }) {
         >
           <Card key={item.fid.toString()} style={{ margin: 20 }}>
             <Card.Cover
-              // source={require('' + item.fImagepath + '')}
+              source={{ uri: item.fImagepath }}
               style={{ width: 310, height: 100 }}
             />
             <Card.Content>

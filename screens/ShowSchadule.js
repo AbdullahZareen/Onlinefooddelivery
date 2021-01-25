@@ -39,7 +39,7 @@ export default function show({ navigation }) {
       >
         <Card style={{ margin: 20, width: 300, alignItems: 'center' }}>
           <Card.Cover
-            source={require('../components/images/channa.jpg')}
+            source={{ uri: item.fImagepath }}
             style={{ width: 300, height: 100 }}
           />
           <Card.Content style={{}}>
@@ -127,7 +127,7 @@ export default function show({ navigation }) {
         <FlatList
           data={data}
           //  keyExtractor={(item) => item.fid.toString()}
-          // keyExtractor={({  }, index) => fid}
+          keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => <Text>{carddata(item)}</Text>}
         />
       </View>

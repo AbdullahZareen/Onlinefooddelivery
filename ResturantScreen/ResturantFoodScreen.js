@@ -8,11 +8,18 @@ import {
   ImageBackground,
 } from 'react-native'
 import { useUser } from '../Context/UserContext'
-import { Card, Paragraph, Title, Button } from 'react-native-paper'
+import {
+  Card,
+  Paragraph,
+  Title,
+  Button,
+  Dialog,
+  Portal,
+} from 'react-native-paper'
 export default function ResturantFoodScreen({ navigation }) {
   const [data, setData] = useState()
-  const id = 2
   const { user, setUser, ipaddress } = useUser()
+  const id = user.u_id
   useEffect(() => {
     fetch(
       'http://' +
@@ -28,8 +35,12 @@ export default function ResturantFoodScreen({ navigation }) {
       .catch((error) => alert(error))
   }, [])
   console.log(data)
-  let img =
-    'file:/data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FNavigation-5bd503d6-c573-465d-9783-d01b1739701e/ImagePicker/b089579d-54cf-4a62-ada3-63654db6a6bb.jpg'
+  function deletefood(id) {
+    fetch(
+      'http://' + ipaddress + '/fypapi/api/fooditem/deletefood?fid=' + id + ''
+    )
+    alert('delete permanent')
+  }
   const carddata = (item) => {
     return (
       <View style={{}}>
@@ -46,12 +57,14 @@ export default function ResturantFoodScreen({ navigation }) {
             <Paragraph>Type :{item.ftype}</Paragraph>
           </Card.Content>
           <Card.Actions>
-            <TouchableOpacity onPress={() => navigation.navigate('update')}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('update', { paramkey: item.fid })
+              }
+            >
               <Button>Edit</Button>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => alert('' + item.fname + ' delete permanent')}
-            >
+            <TouchableOpacity onPress={() => deletefood(item.fid)}>
               <Button>Delete</Button>
             </TouchableOpacity>
           </Card.Actions>
@@ -80,8 +93,7 @@ export default function ResturantFoodScreen({ navigation }) {
       <View style={{}}></View>
       <FlatList
         data={data}
-        //  keyExtractor={(item) => item.fid.toString()}
-        keyExtractor={({ fid }, index) => fid}
+        keyExtractor={(item) => item.fid.toString()}
         renderItem={({ item }) => <Text>{carddata(item)}</Text>}
       />
     </View>

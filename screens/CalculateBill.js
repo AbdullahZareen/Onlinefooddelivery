@@ -23,13 +23,12 @@ export default function calculate({ navigation, route }) {
       <View style={{}}>
         <Card>
           <Card.Cover
-            source={require('../components/images/burger.jpg')}
+            source={{ uri: food.fImagepath }}
             style={{ width: 310, height: 150 }}
           />
 
           <Card.Content>
             <Title>{food.fname}</Title>
-            <Title>{food.fid}</Title>
             <Paragraph>Price:{food.fprice}</Paragraph>
             <Paragraph>discount :{food.ftype}</Paragraph>
           </Card.Content>

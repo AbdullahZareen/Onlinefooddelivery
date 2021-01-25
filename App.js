@@ -25,10 +25,9 @@ export default function App() {
 }
 
 function ChooseNavigation() {
-  const { isLoggedIn, setIsLoggedIn, setUser } = useUser()
-
+  const { isLoggedIn, setIsLoggedIn, setUser, user } = useUser()
+  console.log(user)
   const [loading, setLoading] = useState(true)
-
   useEffect(() => {
     AsyncStorage.getItem('user')
       .then((data) => {
@@ -44,10 +43,10 @@ function ChooseNavigation() {
   }, [setUser, setIsLoggedIn])
 
   if (loading) return <ActivityIndicator />
-
   if (!isLoggedIn) {
     return <LoginStackNavigator />
+  } else user.roles == 'customer'
+  {
+    return <MyDrawerNavigator />
   }
-
-  return <MyDrawerNavigator />
 }

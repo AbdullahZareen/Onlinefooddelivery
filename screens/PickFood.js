@@ -11,8 +11,6 @@ export default function calculate({ navigation, route }) {
   const { cart, setCart } = useCart()
   const food = route.params.paramkey
   const k = cart.length
-  console.log(k)
-  console.log(pickfood)
   console.log(food)
   return (
     <View style={styles.container}>
@@ -27,7 +25,7 @@ export default function calculate({ navigation, route }) {
       <View style={{}}>
         <Card>
           <Card.Cover
-            source={require('../components/images/burger.jpg')}
+            source={{ uri: food.Imagepath }}
             style={{ width: 310, height: 150 }}
           />
 

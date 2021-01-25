@@ -35,7 +35,6 @@ export default function Login({ navigation }) {
         AsyncStorage.setItem('user', JSON.stringify(json))
         setIsLoggedIn(true)
         setUser(json)
-        console.log('DATA>>>', json)
         alert('you are login')
       })
   }

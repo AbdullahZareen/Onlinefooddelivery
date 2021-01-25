@@ -37,7 +37,7 @@ export default function ResturantSignup() {
     // })()
   }, [])
   const Postdata = () => {
-    if ((password == '') | (email == '') | (image == null)) {
+    if (image == null) {
       alert('fill the feilds')
     } else {
       try {
@@ -109,8 +109,8 @@ export default function ResturantSignup() {
       <Text style={styles.setText}>Type</Text>
       <DropDownPicker
         items={[
-          { label: 'Resturant', value: 'Islamabad', hidden: true },
-          { label: 'Cook', value: 'Rawalpindi' },
+          { label: 'Resturant', value: 'Resturant', hidden: true },
+          { label: 'Cook', value: 'Cook' },
         ]}
         placeholder="select type"
         containerStyle={{ height: 50 }}
@@ -123,7 +123,7 @@ export default function ResturantSignup() {
           justifyContent: 'flex-start',
         }}
         dropDownStyle={{ backgroundColor: '#fafafa' }}
-        onChangeItem={(city) => onchangetype(city.value)}
+        onChangeItem={(type) => onchangetype(type.value)}
       />
       <Text style={styles.setText}>City</Text>
       <DropDownPicker

@@ -1,5 +1,4 @@
 import React from 'react'
-import { createDrawerNavigator } from '@react-navigation/drawer'
 //import TabNavigator from './TabNavigator'
 import { NavigationContainer } from '@react-navigation/native'
 import { useUser } from '../Context/UserContext'
@@ -7,23 +6,41 @@ import LoginStackNavigator from './LoginStackNavigator'
 import HomeStackNavigator from './HomeStackNavigator'
 import ResturatStackNavigator from './ResturantStackNavigator'
 import { DrawerContent } from '../components/DrawerContent'
+import AsyncStorage from '@react-native-community/async-storage'
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer'
+
 const Drawer = createDrawerNavigator()
 
 const ResturantDrawerNavigator = () => {
-  const { isLoggedIn, tokken } = useUser()
-  console.log(isLoggedIn)
+  const { setUser, setIsLoggedIn, user } = useUser()
+
+  const logoutAction = async () => {
+    await AsyncStorage.removeItem('user')
+    setUser(null)
+    setIsLoggedIn(false)
+  }
+
   return (
     // drawerContent={(props) => <DrawerContent {...props} />}
-    <NavigationContainer>
-      {!isLoggedIn ? (
-        <LoginStackNavigator />
-      ) : (
-        <Drawer.Navigator>
-          <Drawer.Screen name="Resturant" component={ResturatStackNavigator} />
-          {/* <Drawer.Screen name="Notifications" /> */}
-        </Drawer.Navigator>
-      )}
-    </NavigationContainer>
+
+    <Drawer.Navigator
+      drawerContent={(props) => {
+        return (
+          <DrawerContentScrollView {...props}>
+            <DrawerItemList {...props} />
+            <DrawerItem label="Logout" onPress={logoutAction} />
+          </DrawerContentScrollView>
+        )
+      }}
+    >
+      <Drawer.Screen name="Resturant" component={ResturatStackNavigator} />
+      {/* <Drawer.Screen name="Notifications" /> */}
+    </Drawer.Navigator>
   )
 }
 export default ResturantDrawerNavigator

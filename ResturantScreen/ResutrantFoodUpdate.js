@@ -10,19 +10,34 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
-export default function AddFoodScreen() {
+import { useUser } from '../Context/UserContext'
+export default function AddFoodScreen({ route, navigation }) {
+  const [data, setdata] = useState('')
+  const { ipaddress, user } = useUser()
   const [image, onImagePick] = useState(null)
+  const [fname, setfname] = useState(data.fname)
+  const [type, settype] = useState()
+  const [cook, setcook] = useState()
+  const [price, setprice] = useState()
+  const [discount, setdiscount] = useState()
+  let id = route.params.paramkey
   useEffect(() => {
-    ;(async () => {
-      if (Platform.OS !== 'web') {
-        const {
-          status,
-        } = await ImagePicker.requestMediaLibraryPermissionsAsync()
-        if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!')
-        }
-      }
-    })()
+    fetch(
+      'http://' + ipaddress + '/fypapi/api/fooditem/searchfood?fid=' + id + ''
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        setdata(json)
+        console.log(data)
+        setfname(json[0].fname)
+        onImagePick(json[0].fImagepath)
+        settype(json[0].ftype)
+        setcook(json[0].fcooktime)
+        setprice(json[0].fprice)
+        setcook(json[0].fcooktime)
+        setdiscount(json[0].fdiscount)
+      })
+      .catch((error) => alert(error))
   }, [])
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -36,6 +51,35 @@ export default function AddFoodScreen() {
       onImagePick(result.uri)
     }
   }
+
+  const update = () => {
+    try {
+      let result = fetch(
+        'http://' + ipaddress + '/fypapi/api/fooditem/modifyfood',
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            fid: id,
+            FName: fname,
+            FImage: image,
+            Ftype: type,
+            fprice: price,
+            fdiscount: discount,
+            fcooktime: cook,
+            rid: user.u_id,
+          }),
+        }
+      )
+      alert('updated')
+      navigation.navigate('Home')
+    } catch (e) {
+      console.log(e)
+    }
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.setText}>Image</Text>
@@ -44,16 +88,28 @@ export default function AddFoodScreen() {
       ) : null}
       <Button style={{ Color: '#1c313a' }} title="Browse" onPress={pickImage} />
       <Text style={styles.setText}>Food Name</Text>
-      <TextInput style={styles.inputBox} />
+      <TextInput
+        style={styles.inputBox}
+        value={fname}
+        onChangeText={setfname}
+      />
       <Text style={styles.setText}>Type</Text>
-      <TextInput style={styles.inputBox} />
+      <TextInput style={styles.inputBox} value={type} onChangeText={settype} />
       <Text style={styles.setText}>Price</Text>
-      <TextInput style={styles.inputBox} />
+      <TextInput
+        style={styles.inputBox}
+        value={price}
+        onChangeText={setprice}
+      />
       <Text style={styles.setText}>Discount</Text>
-      <TextInput style={styles.inputBox} />
+      <TextInput
+        style={styles.inputBox}
+        value={discount}
+        onChangeText={setdiscount}
+      />
       <Text style={styles.setText}>Cooking Time</Text>
-      <TextInput style={styles.inputBox} />
-      <TouchableOpacity style={styles.btnbox}>
+      <TextInput style={styles.inputBox} value={cook} onChangeText={setcook} />
+      <TouchableOpacity style={styles.btnbox} onPress={update}>
         <Text style={styles.btntext}>Update</Text>
       </TouchableOpacity>
     </View>

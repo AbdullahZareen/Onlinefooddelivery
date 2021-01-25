@@ -16,7 +16,10 @@ const Screen = ({ navigation }) => {
       >
         <Text>Resturant/Cook SIgn up</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('dsignup')}
+      >
         <Text>DeliveryBoy SIgn up</Text>
       </TouchableOpacity>
     </View>

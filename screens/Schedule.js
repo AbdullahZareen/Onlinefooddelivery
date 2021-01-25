@@ -54,6 +54,7 @@ const Screen = ({ navigation }) => {
               Routinetype: meal,
               quantity: pickfood[i].qty,
               fid: pickfood[i].fid,
+              cid: user.u_id,
             }),
           }
         )
