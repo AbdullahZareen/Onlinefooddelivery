@@ -68,9 +68,7 @@ const Screen = ({ navigation }) => {
       }
       setPickfood([])
     }
-    // for (let i = 0; i < pickfood.length; i++) {
-    //   console.log('pickfood>>>>>>>>>>', pickfood[0].fid)
-    // }
+    navigation.navigate('showschadule')
   }
 
   return (

@@ -6,7 +6,7 @@ import {
   Text,
   FlatList,
 } from 'react-native'
-import { useIsFocused } from '@react-navigation/native'
+
 import { Card, Paragraph, Title, Button } from 'react-native-paper'
 import { useUser } from '../Context/UserContext'
 import {
@@ -14,10 +14,10 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen'
 import DropDownPicker from 'react-native-dropdown-picker'
-export default function show({ navigation }) {
+export default function showOrder({ navigation }) {
   const { user, ipaddress } = useUser()
   const [data, setdata] = useState()
-  const isFocused = useIsFocused()
+
   useEffect(() => {
     fetch('http://' + ipaddress + '/fypapi/api/schedule/showschedule')
       .then((response) => response.json())
@@ -25,7 +25,7 @@ export default function show({ navigation }) {
         setdata(json)
       })
       .catch((error) => alert(error))
-  }, [isFocused])
+  }, [])
   const carddata = (item) => {
     return (
       <View
@@ -38,10 +38,6 @@ export default function show({ navigation }) {
         }}
       >
         <Card style={{ margin: 20, width: 300, alignItems: 'center' }}>
-          <Card.Cover
-            source={{ uri: item.fImagepath }}
-            style={{ width: 300, height: 100 }}
-          />
           <Card.Content style={{}}>
             <Title>Food :{item.fName}</Title>
             <View style={{ flexDirection: 'row' }}>
@@ -64,14 +60,7 @@ export default function show({ navigation }) {
                 alignItems: 'center',
               }}
             >
-              <Button
-                onPress={() => {
-                  deleteschedule(item.mid)
-                  alert('Menu deleted')
-                }}
-              >
-                Delete
-              </Button>
+              <Button>Accept</Button>
             </Card.Actions>
           </Card.Content>
         </Card>
@@ -98,6 +87,7 @@ export default function show({ navigation }) {
         ''
     ).catch((error) => alert(error))
   }
+  console.log(data)
   return (
     <View style={styles.mainConatinerStyle}>
       <DropDownPicker
@@ -130,12 +120,6 @@ export default function show({ navigation }) {
           renderItem={({ item }) => <Text>{carddata(item)}</Text>}
         />
       </View>
-      <TouchableOpacity
-        style={styles.floatingMenuButtonStyle}
-        onPress={() => navigation.navigate('schadule')}
-      >
-        <Text style={{ fontSize: 60 }}>+</Text>
-      </TouchableOpacity>
     </View>
   )
 }

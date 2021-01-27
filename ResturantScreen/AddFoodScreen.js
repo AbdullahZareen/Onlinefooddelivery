@@ -30,7 +30,7 @@ export default function AddFoodScreen() {
     })
 
     if (!result.cancelled) {
-      onImagePick(result.uri)
+      onImagePick(result.base64)
     }
   }
   const Postdata = () => {

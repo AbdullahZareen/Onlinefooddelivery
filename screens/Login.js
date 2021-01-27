@@ -32,6 +32,7 @@ export default function Login({ navigation }) {
           return
         }
 
+        console.log(json)
         AsyncStorage.setItem('user', JSON.stringify(json))
         setIsLoggedIn(true)
         setUser(json)

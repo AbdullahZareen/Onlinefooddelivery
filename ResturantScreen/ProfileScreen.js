@@ -10,7 +10,7 @@ const Screen = () => {
     fetch(
       'http://' +
         ipaddress +
-        '/fypapi/api/customers/customerprofile?id=' +
+        '/fypapi/api/resturant/resturantprofile?id=' +
         user.u_id +
         ''
     )
@@ -28,16 +28,16 @@ const Screen = () => {
       </View>
 
       {data != undefined ? (
-        <Avatar.Text size={200} label={data.cname[0]} style={styles.avatar} />
+        <Avatar.Text size={200} label={data.rcname[0]} style={styles.avatar} />
       ) : (
         <Text></Text>
       )}
       <View style={styles.body}>
         {data != undefined ? (
           <View style={styles.bodyContent}>
-            <Text style={styles.name}>{data.cname}</Text>
-            <Text style={styles.name}>{data.cemail}</Text>
-            <Text style={styles.info}>{data.cnumber}</Text>
+            <Text style={styles.name}>{data.rcname}</Text>
+            <Text style={styles.name}>{data.rcemail}</Text>
+            <Text style={styles.info}>{data.rcnumber}</Text>
             <Text style={styles.description}>
               Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum
               electram expetendis, omittam deseruisse consequuntur ius an,

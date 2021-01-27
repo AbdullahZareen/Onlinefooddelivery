@@ -16,10 +16,15 @@ import {
   Dialog,
   Portal,
 } from 'react-native-paper'
+import { useIsFocused } from '@react-navigation/native'
+
 export default function ResturantFoodScreen({ navigation }) {
+  const isFocused = useIsFocused()
+
   const [data, setData] = useState()
   const { user, setUser, ipaddress } = useUser()
   const id = user.u_id
+
   useEffect(() => {
     fetch(
       'http://' +
@@ -33,7 +38,8 @@ export default function ResturantFoodScreen({ navigation }) {
         setData(json)
       })
       .catch((error) => alert(error))
-  }, [])
+  }, [isFocused])
+
   console.log(data)
   function deletefood(id) {
     fetch(

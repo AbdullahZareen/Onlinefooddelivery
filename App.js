@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler'
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator } from 'react-native'
+import { ActivityIndicator, View, Text } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import AsyncStorage from '@react-native-community/async-storage'
 import { UserProvider, useUser } from './Context/UserContext'
@@ -9,6 +9,7 @@ import LoginStackNavigator from './navigations/LoginStackNavigator'
 import MyDrawerNavigator from './navigations/MyDrawerNavigator'
 import ResturantDrawerNavigator from './navigations/ResutrantDrawerNavigator'
 import { ScheduleProvider } from './Context/Schedulecontext'
+import DboyDrawerNavigator from './navigations/DboyDrawerNavigator'
 
 export default function App() {
   return (
@@ -26,8 +27,8 @@ export default function App() {
 
 function ChooseNavigation() {
   const { isLoggedIn, setIsLoggedIn, setUser, user } = useUser()
-  console.log(user)
   const [loading, setLoading] = useState(true)
+
   useEffect(() => {
     AsyncStorage.getItem('user')
       .then((data) => {
@@ -39,14 +40,31 @@ function ChooseNavigation() {
 
         setIsLoggedIn(false)
       })
-      .then(() => setLoading(false))
+      .then(() => {
+        setLoading(false)
+      })
   }, [setUser, setIsLoggedIn])
 
   if (loading) return <ActivityIndicator />
-  if (!isLoggedIn) {
+
+  if (!isLoggedIn || !user) {
     return <LoginStackNavigator />
-  } else user.roles == 'customer'
-  {
+  }
+
+  if (user.roles.toLowerCase() === 'customer') {
     return <MyDrawerNavigator />
   }
+
+  if (user.roles.toLowerCase() === 'resturant') {
+    return <ResturantDrawerNavigator />
+  }
+  if (user.roles.toLowerCase() === 'deliveryboy') {
+    return <DboyDrawerNavigator />
+  }
+
+  return (
+    <View>
+      <Text>You are not logged in as customer</Text>
+    </View>
+  )
 }

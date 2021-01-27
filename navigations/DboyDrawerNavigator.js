@@ -8,12 +8,8 @@ import {
 } from '@react-navigation/drawer'
 //import TabNavigator from './TabNavigator'
 import { useUser } from '../Context/UserContext'
-import LoginStackNavigator from './LoginStackNavigator'
-import HomeStackNavigator from './HomeStackNavigator'
-import ResturatStackNavigator from './ResturantStackNavigator'
-import { DrawerContent } from '../components/DrawerContent'
+import DboyStackNavigator from '../navigations/DboyStackNavigator'
 import AsyncStorage from '@react-native-community/async-storage'
-import ProfileScreen from '../screens/ProfileScreen'
 import { NavigationContainer } from '@react-navigation/native'
 
 const Drawer = createDrawerNavigator()
@@ -39,10 +35,7 @@ export default function MyDrawerNavigator() {
         )
       }}
     >
-      <Drawer.Screen name="Home" component={HomeStackNavigator} />
-      <Drawer.Screen name="Login" component={LoginStackNavigator} />
-      <Drawer.Screen name="Resturant" component={ResturatStackNavigator} />
-      <Drawer.Screen name="Profile" component={ProfileScreen} />
+      <Drawer.Screen name="Dhome" component={DboyStackNavigator} />
     </Drawer.Navigator>
   )
 }

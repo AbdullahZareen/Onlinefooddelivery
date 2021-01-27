@@ -6,6 +6,7 @@ import { Image } from 'react-native'
 import AddFoodScreen from '../ResturantScreen/AddFoodScreen'
 import ResturantFoodScreen from '../ResturantScreen/ResturantFoodScreen'
 import ResturantFoodUpdate from '../ResturantScreen/ResutrantFoodUpdate'
+import scheduleorder from '../ResturantScreen/ScheduleOrder'
 
 const Stack = createStackNavigator()
 
@@ -21,6 +22,7 @@ const ResturantStackNavigator = () => {
       />
       <Stack.Screen name="AddFoodItem" component={AddFoodScreen} />
       <Stack.Screen name="update" component={ResturantFoodUpdate} />
+      <Stack.Screen name="ScheduleOrder" component={scheduleorder} />
     </Stack.Navigator>
   )
 }
