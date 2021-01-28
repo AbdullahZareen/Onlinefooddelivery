@@ -12,8 +12,18 @@ import { useUser } from '../Context/UserContext'
 import { Card, Paragraph, Title, Button } from 'react-native-paper'
 const Screen = () => {
   const { cart, setCart } = useCart()
-  const { user, setUser, ipaddress } = useUser()
+  const { user, ipaddress } = useUser()
   const [result, setResult] = useState()
+  var date =
+    new Date().getFullYear() +
+    '-' +
+    new Date().getMonth() +
+    1 +
+    '-' +
+    new Date().getDate()
+  var time = new Date().getHours() + ':' + new Date().getMinutes()
+
+  const total = cart.reduce((t, i) => t + i.qty * i.price, 0)
 
   function tabledata(item) {
     return (
@@ -59,9 +69,12 @@ const Screen = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          odate: '2020-10-13T00:00:00',
-          subscribtion: false,
-          otime: '12:00:00',
+          odate: date,
+          deliverydate: date,
+          otime: time,
+          opickstatus: 0,
+          odeliverdstatus: 0,
+          Totalbill: total,
           cid: user.u_id,
         }),
       })
@@ -91,10 +104,6 @@ const Screen = () => {
           }),
         })
         alert('saved')
-
-        console.log('fid>>>', cart[i].id)
-        console.log('qty>>>', cart[i].qty)
-        console.log('oi>>>>>', json)
       } catch (e) {
         console.log(e)
       }
@@ -105,14 +114,23 @@ const Screen = () => {
     <View>
       <FlatList
         data={cart}
-        keyExtractor={(item) => item.id.toString()}
-        //  keyExtractor={({ rid }, index) => rid.toString()}
+        keyExtractor={(item) => item.key.toString()}
         renderItem={({ item }) => <Text>{tabledata(item)}</Text>}
       />
-      <TouchableOpacity style={styles.btnbox} onPress={() => order()}>
+      <TouchableOpacity
+        style={styles.btnbox}
+        onPress={() => {
+          if (cart.length === 0) {
+            alert('there is no food in a cart')
+          } else {
+            order()
+            setCart([])
+          }
+        }}
+      >
         <Text style={styles.btntext}>Order</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.btnbox} onPress={() => order()}>
+      <TouchableOpacity style={styles.btnbox}>
         <Text style={styles.btntext}>Total Bill</Text>
       </TouchableOpacity>
     </View>

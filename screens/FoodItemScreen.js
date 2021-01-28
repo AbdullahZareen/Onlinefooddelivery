@@ -66,7 +66,7 @@ export default function fooditem({ navigation, route }) {
       <FlatList
         data={fooddata}
         //  keyExtractor={(item) => item.fid.toString()}
-        keyExtractor={({ fid }, index) => fid}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => <Text>{carddata(item)}</Text>}
       />
       <StatusBar backgroundColor="#1c313a" />

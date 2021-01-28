@@ -15,7 +15,7 @@ import { DrawerContent } from '../components/DrawerContent'
 import AsyncStorage from '@react-native-community/async-storage'
 import ProfileScreen from '../screens/ProfileScreen'
 import { NavigationContainer } from '@react-navigation/native'
-import DboyStackNavigator from './DboyStackNavigator'
+import Orderdetail from '../screens/Orderdetail'
 const Drawer = createDrawerNavigator()
 
 export default function MyDrawerNavigator() {
@@ -43,7 +43,7 @@ export default function MyDrawerNavigator() {
       <Drawer.Screen name="Login" component={LoginStackNavigator} />
       <Drawer.Screen name="Resturant" component={ResturatStackNavigator} />
       <Drawer.Screen name="Profile" component={ProfileScreen} />
-      <Drawer.Screen name="DeliveryBoy" component={DboyStackNavigator} />
+      <Drawer.Screen name="OrderDetail" component={Orderdetail} />
     </Drawer.Navigator>
   )
 }

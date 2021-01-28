@@ -15,7 +15,7 @@ import Schadule from '../screens/Schedule'
 import ScheduleFood from '../screens/ScheduleFood'
 import showschadule from '../screens/ShowSchadule'
 import PickFood from '../screens/PickFood'
-import Order from '../screens/Order'
+import Orderfood from '../screens/OrderFoods'
 const HomeStackNavigator = ({ navigation }) => {
   function ActionBarIcon() {
     return (
@@ -64,7 +64,7 @@ const HomeStackNavigator = ({ navigation }) => {
       <Stack.Screen name="fooditem" component={FoodItemScreen} />
       <Stack.Screen name="BillCal" component={BillScreen} />
       <Stack.Screen name="Cart" component={CartScreen} />
-      <Stack.Screen name="Order" component={Orderdetail} />
+      <Stack.Screen name="orderfood" component={Orderfood} />
 
       <Stack.Screen
         name="schadule"
@@ -107,7 +107,6 @@ const HomeStackNavigator = ({ navigation }) => {
         }}
       />
       <Stack.Screen name="pickfood" component={PickFood} />
-      <Stack.Screen name="order" component={Order} />
     </Stack.Navigator>
   )
 }

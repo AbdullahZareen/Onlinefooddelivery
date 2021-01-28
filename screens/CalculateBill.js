@@ -9,7 +9,6 @@ export default function calculate({ navigation, route }) {
   const { cart, setCart } = useCart()
   const food = route.params.paramkey
   const k = cart.length
-  console.log(k)
   return (
     <View style={styles.container}>
       <Text

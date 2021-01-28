@@ -14,6 +14,8 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  ScrollView,
+  SafeAreaView,
 } from 'react-native'
 import { useUser } from '../Context/UserContext'
 import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view'
@@ -65,7 +67,7 @@ export default function Home({ navigation, route }) {
     )
   }
   return (
-    <KeyboardAvoidingScrollView behavoir="position">
+    <SafeAreaView>
       <View style={styles.container}>
         <View style={{ flexDirection: 'row' }}>
           <Searchbar style={{ borderRadius: 25, width: 250 }} />
@@ -96,7 +98,7 @@ export default function Home({ navigation, route }) {
         )}
         <StatusBar backgroundColor="#1c313a" />
       </View>
-    </KeyboardAvoidingScrollView>
+    </SafeAreaView>
   )
 }
 
