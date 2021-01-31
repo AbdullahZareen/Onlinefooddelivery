@@ -10,10 +10,12 @@ import {
   Image,
   Platform,
   ScrollView,
+  ToastAndroid,
 } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { useUser } from '../Context/UserContext'
-export default function ResturantSignup() {
+import { NavigationContainer } from '@react-navigation/native'
+export default function ResturantSignup({ navigation }) {
   const [oname, onchangeoname] = useState('')
   const [bname, onchangebname] = useState('')
   const [number, onchangenumber] = useState('')
@@ -23,18 +25,28 @@ export default function ResturantSignup() {
   const [city, oncitychange] = useState('')
   const [type, onchangetype] = useState('')
   const [image, onImagePick] = useState(null)
-  const { ipaddress } = useUser()
+  const { ipaddress, user } = useUser()
   useEffect(() => {
-    // ;(async () => {
-    //   if (Platform.OS !== 'web') {
-    //     const {
-    //       status,
-    //     } = await ImagePicker.requestMediaLibraryPermissionsAsync()
-    //     if (status !== 'granted') {
-    //       alert('Sorry, we need camera roll permissions to make this work!')
-    //     }
-    //   }
-    // })()
+    fetch(
+      'http://' +
+        ipaddress +
+        '/fypapi/api/Resturant/Resturantprofile?id=' +
+        user.u_id +
+        ''
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        onchangeoname(json[0].ownername)
+        onchangebname(json[0].rcname)
+        onImagePick(json[0].rcImage)
+        onChangeemail(json[0].rcemail)
+        onchangepassword(json[0].rpassword)
+        onchangeadress(json[0].rcaddress)
+        onchangetype(json[0].Category)
+        oncitychange(json[0].rccity)
+        onchangenumber(json[0].rcnumber)
+      })
+      .catch((error) => alert(error))
   }, [])
   const Postdata = () => {
     if (image == null) {
@@ -42,7 +54,7 @@ export default function ResturantSignup() {
     } else {
       try {
         let result = fetch(
-          'http://' + ipaddress + '/fypapi/api/resturant/addresturant',
+          'http://' + ipaddress + '/fypapi/api/resturant/modifyResturant',
           {
             method: 'POST',
             headers: {
@@ -50,6 +62,7 @@ export default function ResturantSignup() {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+              rid: user.u_id,
               rcname: bname,
               rcaddress: address,
               rccity: city,
@@ -58,27 +71,31 @@ export default function ResturantSignup() {
               rcImage: image,
               Category: type,
               ownername: oname,
-              rcnumber: number,
             }),
           }
         )
-        alert('saved')
+        ToastAndroid.showWithGravity(
+          'Updated ',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        )
       } catch (e) {
         console.log(e)
       }
+      navigation.navigate('Profile')
     }
   }
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaType: ImagePicker.MediaTypeOptions.Images,
-      base64: false,
+      base64: true,
       allowsEditing: false,
       aspect: [4, 3],
     })
 
     if (!result.cancelled) {
-      onImagePick(result.uri)
+      onImagePick(result.base64)
     }
   }
   return (
@@ -87,7 +104,7 @@ export default function ResturantSignup() {
 
       {image !== null ? (
         <Image
-          source={{ uri: image }}
+          source={{ uri: 'data:image/jpeg;base64,' + image }}
           style={{ width: 350, height: 100, alignItems: 'center' }}
         />
       ) : null}
@@ -97,20 +114,40 @@ export default function ResturantSignup() {
         onPress={pickImage}
       />
       <Text style={styles.setText}> Owner Name</Text>
-      <TextInput style={styles.inputBox} onChangeText={onchangeoname} />
+      <TextInput
+        style={styles.inputBox}
+        value={oname}
+        onChangeText={onchangeoname}
+      />
       <Text style={styles.setText}>Bussiness Name</Text>
-      <TextInput style={styles.inputBox} onChangeText={onchangebname} />
+      <TextInput
+        style={styles.inputBox}
+        value={bname}
+        onChangeText={onchangebname}
+      />
 
       <Text style={styles.setText}>Phone Number</Text>
-      <TextInput style={styles.inputBox} onChangeText={onchangenumber} />
+      <TextInput
+        style={styles.inputBox}
+        value={number}
+        onChangeText={onchangenumber}
+      />
       <Text style={styles.setText}>Email</Text>
-      <TextInput style={styles.inputBox} onChangeText={onChangeemail} />
+      <TextInput
+        style={styles.inputBox}
+        value={email}
+        onChangeText={onChangeemail}
+      />
       <Text style={styles.setText}>Address</Text>
-      <TextInput style={styles.inputBox} onChangeText={onchangeadress} />
+      <TextInput
+        style={styles.inputBox}
+        value={address}
+        onChangeText={onchangeadress}
+      />
       <Text style={styles.setText}>Type</Text>
       <DropDownPicker
         items={[
-          { label: 'Resturant', value: 'Resturant', hidden: true },
+          { label: 'Resturant', value: 'Resturant' },
           { label: 'Cook', value: 'Cook' },
         ]}
         placeholder="select type"
@@ -120,6 +157,7 @@ export default function ResturantSignup() {
           width: 350,
           justifyContent: 'center',
         }}
+        value={type}
         itemStyle={{
           justifyContent: 'flex-start',
         }}
@@ -137,6 +175,7 @@ export default function ResturantSignup() {
         ]}
         placeholder="select city"
         containerStyle={{ height: 50 }}
+        value={city}
         style={{
           width: 350,
           justifyContent: 'center',
@@ -153,10 +192,11 @@ export default function ResturantSignup() {
       <TextInput
         style={styles.inputBox}
         secureTextEntry={true}
+        value={password}
         onChangeText={onchangepassword}
       />
       <TouchableOpacity style={styles.btnbox} onPress={Postdata}>
-        <Text style={styles.btntext}>SignUp</Text>
+        <Text style={styles.btntext}>update</Text>
       </TouchableOpacity>
     </ScrollView>
   )

@@ -19,13 +19,14 @@ export default function show({ navigation }) {
   const [data, setdata] = useState()
   const isFocused = useIsFocused()
   useEffect(() => {
-    fetch('http://' + ipaddress + '/fypapi/api/schedule/showschedule')
+    fetch('http://' + ipaddress + '/fypapi/api/Customers/showschedule?id=58')
       .then((response) => response.json())
       .then((json) => {
         setdata(json)
       })
       .catch((error) => alert(error))
   }, [isFocused])
+  console.log(data)
   const carddata = (item) => {
     return (
       <View
@@ -39,7 +40,7 @@ export default function show({ navigation }) {
       >
         <Card style={{ margin: 20, width: 300, alignItems: 'center' }}>
           <Card.Cover
-            source={{ uri: item.fImagepath }}
+            source={{ uri: 'data:image/jpeg;base64,' + item.fImagepath }}
             style={{ width: 300, height: 100 }}
           />
           <Card.Content style={{}}>

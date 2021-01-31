@@ -22,7 +22,7 @@ export default function calculate({ navigation, route }) {
       <View style={{}}>
         <Card>
           <Card.Cover
-            source={{ uri: food.fImagepath }}
+            source={{ uri: 'data:image/jpeg;base64,' + food.fImagepath }}
             style={{ width: 310, height: 150 }}
           />
 

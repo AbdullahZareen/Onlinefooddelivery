@@ -23,9 +23,7 @@ const Screen = () => {
   console.log(data)
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text>Profile</Text>
-      </View>
+      <View style={styles.header}></View>
 
       {data != undefined ? (
         <Avatar.Text size={200} label={data.rcname[0]} style={styles.avatar} />

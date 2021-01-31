@@ -12,7 +12,6 @@ const LoginNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Login" component={Login} headerMode="none" />
-      <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Usersignup" component={UsersSignup} />
       <Stack.Screen
         name="ResturantSignup"

@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native'
-import { Checkbox, RadioButton } from 'react-native-paper'
-
+import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import { useSchedule } from '../Context/Schedulecontext'
@@ -31,10 +22,7 @@ const Screen = ({ navigation }) => {
   }
 
   const handleConfirm = (time) => {
-    const arr = time.split('T')
-    console.log('A date has been picked: ', arr[0])
-
-    //console.log('A date has been picked: ', time)
+    console.log('A date has been picked: ', time)
     hideDatePicker()
   }
   function postschedule() {
@@ -54,15 +42,12 @@ const Screen = ({ navigation }) => {
               Routinetype: meal,
               quantity: pickfood[i].qty,
               fid: pickfood[i].fid,
-              cid: user.u_id,
+              subid: 1,
             }),
           }
         )
           .then((response) => response.json())
-          .then((json) => {
-            console.log('data save id>>>>>>>>>>>>>', json)
-            console.log('day>>>time', day, time)
-          })
+          .then((json) => {})
       } catch (e) {
         console.log(e)
       }

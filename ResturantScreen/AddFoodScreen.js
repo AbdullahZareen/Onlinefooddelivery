@@ -20,7 +20,7 @@ export default function AddFoodScreen() {
   const [cook, setcook] = useState()
   const [price, setprice] = useState()
   const [discount, setdiscount] = useState()
-
+  const [imageuri, setimageuri] = useState()
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaType: ImagePicker.MediaTypeOptions.Images,
@@ -31,6 +31,7 @@ export default function AddFoodScreen() {
 
     if (!result.cancelled) {
       onImagePick(result.base64)
+      setimageuri(result.uri)
     }
   }
   const Postdata = () => {
@@ -60,7 +61,10 @@ export default function AddFoodScreen() {
     <View style={styles.container}>
       <Text style={styles.setText}>Image</Text>
       {image !== null ? (
-        <Image source={{ uri: image }} style={{ width: 200, height: 100 }} />
+        <Image
+          source={{ uri: 'data:image/jpeg;base64,' + image }}
+          style={{ width: 200, height: 100 }}
+        />
       ) : null}
       <Button style={{ Color: '#1c313a' }} title="Browse" onPress={pickImage} />
       <Text style={styles.setText}>Food Name</Text>

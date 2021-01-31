@@ -40,7 +40,6 @@ export default function ResturantFoodScreen({ navigation }) {
       .catch((error) => alert(error))
   }, [isFocused])
 
-  console.log(data)
   function deletefood(id) {
     fetch(
       'http://' + ipaddress + '/fypapi/api/fooditem/deletefood?fid=' + id + ''
@@ -53,7 +52,7 @@ export default function ResturantFoodScreen({ navigation }) {
         <Card key={item.fid.toString()} style={{ margin: 20 }}>
           <Card.Cover
             source={{
-              uri: item.fImagepath,
+              uri: 'data:image/jpeg;base64,' + item.fImagepath,
             }}
             style={{ width: 300, height: 100 }}
           />

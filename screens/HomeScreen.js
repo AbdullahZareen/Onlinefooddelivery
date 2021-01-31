@@ -14,13 +14,12 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
-  ScrollView,
   SafeAreaView,
 } from 'react-native'
 import { useUser } from '../Context/UserContext'
 import { KeyboardAvoidingScrollView } from 'react-native-keyboard-avoiding-scroll-view'
 export default function Home({ navigation, route }) {
-  const [isLoading, setLoading] = useState(true)
+  const [isLoading, setLoading] = useState(false)
   const [data, setData] = useState([])
   const { user, setUser, ipaddress } = useUser()
   useEffect(() => {
@@ -30,9 +29,7 @@ export default function Home({ navigation, route }) {
         setData(json)
       })
       .catch((error) => alert(error))
-      .finally(setLoading(false))
   }, [])
-  console.log(data)
   const carddata = (item) => {
     return (
       <View style={{}}>
@@ -52,7 +49,7 @@ export default function Home({ navigation, route }) {
           ) : (
             <Card key={item.rid.toString()} style={{ margin: 20 }}>
               <Card.Cover
-                source={{ uri: item.rcImage }}
+                source={{ uri: 'data:image/jpeg;base64,' + item.rcImage }}
                 style={{ width: 280, height: 100 }}
               />
               <Card.Content>

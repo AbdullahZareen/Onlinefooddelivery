@@ -1,5 +1,5 @@
-import React from 'react'
-import { Text, View, TouchableOpacity, Platform } from 'react-native'
+import React, { useState } from 'react'
+import { Text, View, TouchableOpacity, Platform, Switch } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
 import HomeScreen from '../screens/HomeScreen'
 import FoodItemScreen from '../screens/FoodItemScreen'
@@ -16,19 +16,16 @@ import ScheduleFood from '../screens/ScheduleFood'
 import showschadule from '../screens/ShowSchadule'
 import PickFood from '../screens/PickFood'
 import Orderfood from '../screens/OrderFoods'
+
 const HomeStackNavigator = ({ navigation }) => {
-  function ActionBarIcon() {
-    return (
-      <Image
-        source={require('../components/images/1.png')}
-        style={{ width: 40, height: 40, borderRadius: 40 / 2, marginLeft: 15 }}
-      />
-    )
-  }
+  const [isEnabled, setIsEnabled] = useState(false)
+
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState)
+
   function Cart() {
     return (
       <View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
           <Image
             source={require('../components/images/cart.jpg')}
             style={{
@@ -58,7 +55,7 @@ const HomeStackNavigator = ({ navigation }) => {
               style={{ marginLeft: 10 }}
             />
           ),
-          headerRight: (props) => <ShoppingCartIcon />,
+          headerRight: (props) => <Cart />,
         }}
       />
       <Stack.Screen name="fooditem" component={FoodItemScreen} />
@@ -97,11 +94,13 @@ const HomeStackNavigator = ({ navigation }) => {
           headerTitle: 'Week Schadule',
           headerRight: () => (
             <TouchableOpacity>
-              <Text
-                style={{ marginRight: 20, fontWeight: 'bold', fontSize: 18 }}
-              >
-                Activate
-              </Text>
+              <Switch
+                trackColor={{ false: '#767577', true: '#81b0ff' }}
+                thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitch}
+                value={isEnabled}
+              />
             </TouchableOpacity>
           ),
         }}

@@ -28,7 +28,6 @@ export default function AddFoodScreen({ route, navigation }) {
       .then((response) => response.json())
       .then((json) => {
         setdata(json)
-        console.log(data)
         setfname(json[0].fname)
         onImagePick(json[0].fImagepath)
         settype(json[0].ftype)
@@ -48,7 +47,7 @@ export default function AddFoodScreen({ route, navigation }) {
     })
 
     if (!result.cancelled) {
-      onImagePick(result.uri)
+      onImagePick(result.base64)
     }
   }
 
@@ -84,7 +83,10 @@ export default function AddFoodScreen({ route, navigation }) {
     <View style={styles.container}>
       <Text style={styles.setText}>Image</Text>
       {image !== null ? (
-        <Image source={{ uri: image }} style={{ width: 200, height: 100 }} />
+        <Image
+          source={{ uri: 'data:image/jpeg;base64,' + image }}
+          style={{ width: 200, height: 100 }}
+        />
       ) : null}
       <Button style={{ Color: '#1c313a' }} title="Browse" onPress={pickImage} />
       <Text style={styles.setText}>Food Name</Text>

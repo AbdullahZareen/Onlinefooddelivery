@@ -1,29 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  FlatList,
-  Button,
-  Image,
-} from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { useUser } from '../Context/UserContext'
-import { DataTable } from 'react-native-paper'
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen'
-import { useIsFocused } from '@react-navigation/native'
 const Screen = ({ navigation }) => {
   const [data, setdata] = useState()
-  const isFocused = useIsFocused()
   const { ipaddress, user } = useUser()
   useEffect(() => {
     fetch(
       'http://' +
         ipaddress +
-        '/fypapi/api/order/customerorder?id=' +
+        '/fypapi/api/resturant/resturantsimpleorder?id=' +
         user.u_id +
         ''
     )
@@ -32,10 +21,12 @@ const Screen = ({ navigation }) => {
         setdata(json)
       })
       .catch((error) => alert(error))
-  }, [isFocused])
+  }, [])
+  console.log(data)
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>
+      <Text>current orders</Text>
+      {/* <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>
         Order Details
       </Text>
       {data == null ? (
@@ -72,7 +63,7 @@ const Screen = ({ navigation }) => {
             )}
           />
         </View>
-      )}
+      )} */}
     </View>
   )
 }

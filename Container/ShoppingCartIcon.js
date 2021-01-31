@@ -36,9 +36,6 @@ const ShoppingCartIcon = (props, { navigation }) => {
           {cart.length}
         </Text>
       </View>
-      <TouchableOpacity>
-        <Icon name="ios-cart" size={30} />
-      </TouchableOpacity>
     </View>
   )
 }

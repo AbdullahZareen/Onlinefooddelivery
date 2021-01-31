@@ -11,7 +11,6 @@ import {
 } from 'react-native'
 import { useUser } from '../Context/UserContext'
 
-import { ScrollView } from 'react-native-gesture-handler'
 export default function fooditem({ navigation, route }) {
   const [isLoading, setLoading] = useState(true)
   const [fooddata, setfoodData] = useState([])
@@ -39,7 +38,7 @@ export default function fooditem({ navigation, route }) {
         >
           <Card key={item.fid.toString()} style={{ margin: 20 }}>
             <Card.Cover
-              source={{ uri: item.fImagepath }}
+              source={{ uri: 'data:image/jpeg;base64,' + item.fImagepath }}
               style={{ width: 310, height: 100 }}
             />
             <Card.Content>

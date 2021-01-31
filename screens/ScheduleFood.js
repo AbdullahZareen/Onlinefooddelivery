@@ -37,7 +37,7 @@ export default function fooditem({ navigation, route }) {
         >
           <Card style={{ margin: 20, width: 250 }}>
             <Card.Cover
-              source={{ uri: item.Imagepath }}
+              source={{ uri: 'data:image/jpeg;base64,' + item.Imagepath }}
               style={{ width: 250, height: 100 }}
             />
             <Card.Content style={{}}>
@@ -68,7 +68,7 @@ export default function fooditem({ navigation, route }) {
       <FlatList
         data={fooddata}
         //  keyExtractor={(item) => item.fid.toString()}
-        keyExtractor={({ fid }, index) => fid}
+        keyExtractor={({ fid }, index) => index.toString()}
         renderItem={({ item }) => <Text>{carddata(item)}</Text>}
       />
       <StatusBar backgroundColor="#1c313a" />

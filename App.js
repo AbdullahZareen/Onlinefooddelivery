@@ -37,7 +37,6 @@ function ChooseNavigation() {
           setIsLoggedIn(true)
           return
         }
-
         setIsLoggedIn(false)
       })
       .then(() => {

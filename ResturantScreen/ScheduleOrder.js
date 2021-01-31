@@ -68,50 +68,18 @@ export default function showOrder({ navigation }) {
     )
   }
   const [daydata, setdaydata] = useState()
-  function dropdowndaysearch(day) {
-    fetch(
-      'http://' + ipaddress + '/fypapi/api/schedule/showschedule?d=' + day + ''
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        setdaydata(json)
-      })
-      .catch((error) => alert(error))
-  }
-  function deleteschedule(mid) {
-    fetch(
-      'http://' +
-        ipaddress +
-        '/fypapi/api/schedule/Deleteschedule?mid=' +
-        mid +
-        ''
-    ).catch((error) => alert(error))
-  }
-  console.log(data)
+
+  // function deleteschedule(mid) {
+  //   fetch(
+  //     'http://' +
+  //       ipaddress +
+  //       '/fypapi/api/schedule/Deleteschedule?mid=' +
+  //       mid +
+  //       ''
+  //   ).catch((error) => alert(error))
+  // }
   return (
     <View style={styles.mainConatinerStyle}>
-      <DropDownPicker
-        items={[
-          { label: 'Monday', value: 'Monday' },
-          { label: 'Tuesday', value: 'Tuesday' },
-          { label: 'Wednesday', value: 'Wednesday' },
-          { label: 'Thurday', value: 'Thursday' },
-          { label: 'Friday', value: 'Friday' },
-        ]}
-        containerStyle={{ height: 40 }}
-        style={{
-          backgroundColor: '#fafafa',
-          width: 350,
-          justifyContent: 'center',
-        }}
-        itemStyle={{
-          justifyContent: 'flex-start',
-        }}
-        dropDownStyle={{ backgroundColor: '#fafafa' }}
-        onChangeItem={(day) => {
-          dropdowndaysearch(day.value)
-        }}
-      />
       <View>
         <FlatList
           data={data}

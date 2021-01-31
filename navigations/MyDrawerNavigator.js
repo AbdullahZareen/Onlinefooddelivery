@@ -1,5 +1,5 @@
 import React from 'react'
-import { ActivityIndicator } from 'react-native'
+import NewCart from '../screens/NewCart'
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import ProfileScreen from '../screens/ProfileScreen'
 import { NavigationContainer } from '@react-navigation/native'
 import Orderdetail from '../screens/Orderdetail'
+import Setting from '../screens/SettingScreen'
 const Drawer = createDrawerNavigator()
 
 export default function MyDrawerNavigator() {
@@ -35,15 +36,21 @@ export default function MyDrawerNavigator() {
           <DrawerContentScrollView {...props}>
             <DrawerItemList {...props} />
             <DrawerItem label="Logout" onPress={logoutAction} />
+            <DrawerItem
+              label="Schedule"
+              onPress={() => props.navigation.navigate('showschadule')}
+            />
           </DrawerContentScrollView>
         )
       }}
     >
       <Drawer.Screen name="Home" component={HomeStackNavigator} />
-      <Drawer.Screen name="Login" component={LoginStackNavigator} />
-      <Drawer.Screen name="Resturant" component={ResturatStackNavigator} />
+      {/* <Drawer.Screen name="Login" component={LoginStackNavigator} />
+      <Drawer.Screen name="Resturant" component={ResturatStackNavigator} /> */}
       <Drawer.Screen name="Profile" component={ProfileScreen} />
       <Drawer.Screen name="OrderDetail" component={Orderdetail} />
+      <Drawer.Screen name="setting" component={Setting} />
+      <Drawer.Screen name="newcart" component={NewCart} />
     </Drawer.Navigator>
   )
 }

@@ -36,7 +36,12 @@ const ResturantDrawerNavigator = () => {
             <DrawerItemList {...props} />
             <DrawerItem label="Logout" onPress={logoutAction} />
             <DrawerItem
-              label="ScheduleOrder"
+              label="Profile"
+              onPress={() => props.navigation.navigate('Profile')}
+            />
+
+            <DrawerItem
+              label="Orders"
               onPress={() => props.navigation.navigate('ScheduleOrder')}
             />
           </DrawerContentScrollView>
@@ -44,7 +49,6 @@ const ResturantDrawerNavigator = () => {
       }}
     >
       <Drawer.Screen name="Resturant" component={ResturatStackNavigator} />
-      <Drawer.Screen name="Profile" component={ProfileScreen} />
 
       {/* <Drawer.Screen name="Notifications" /> */}
     </Drawer.Navigator>

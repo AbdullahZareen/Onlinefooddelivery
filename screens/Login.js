@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  ToastAndroid,
 } from 'react-native'
 import { useUser } from '../Context/UserContext'
 import AsyncStorage from '@react-native-community/async-storage'
@@ -28,7 +29,11 @@ export default function Login({ navigation }) {
       .then((response) => response.json())
       .then((json) => {
         if (json == false) {
-          alert('incorrect email')
+          ToastAndroid.showWithGravity(
+            'Incorrect password ',
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER
+          )
           return
         }
 
@@ -36,7 +41,11 @@ export default function Login({ navigation }) {
         AsyncStorage.setItem('user', JSON.stringify(json))
         setIsLoggedIn(true)
         setUser(json)
-        alert('you are login')
+        ToastAndroid.showWithGravity(
+          'Login Successful',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        )
       })
   }
 
