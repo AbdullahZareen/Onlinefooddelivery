@@ -4,6 +4,8 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import { useSchedule } from '../Context/Schedulecontext'
 import { useUser } from '../Context/UserContext'
+import { LogBox } from 'react-native'
+
 const Screen = ({ navigation }) => {
   const [day, setDay] = useState('')
   const [meal, setMeal] = useState('')
@@ -22,7 +24,8 @@ const Screen = ({ navigation }) => {
   }
 
   const handleConfirm = (time) => {
-    console.log('A date has been picked: ', time)
+    const t = new Date(time)
+    console.log('A date has been picked: ', t.toLocaleTimeString())
     hideDatePicker()
   }
   function postschedule() {

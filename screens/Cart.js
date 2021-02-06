@@ -10,6 +10,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen'
 import {
+  RefreshControl,
   StyleSheet,
   Button,
   Text,
@@ -24,25 +25,16 @@ import {
   FlatList,
 } from 'react-native'
 
-import { DataTable } from 'react-native-paper'
 import { useCart } from '../Context/CartContext'
 import { useUser } from '../Context/UserContext'
-import {} from 'react-native-paper'
 import { LogBox } from 'react-native'
-import {
-  Container,
-  Header,
-  Content,
-  List,
-  ListItem,
-  Left,
-  Body,
-  Right,
-  Thumbnail,
-  SwipeRow,
-} from 'native-base'
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested'])
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout)
+  })
+}
 const Screen = () => {
   const { cart, setCart } = useCart()
   const { user, ipaddress } = useUser()
@@ -50,11 +42,16 @@ const Screen = () => {
   var date =
     new Date().getFullYear() +
     '-' +
-    new Date().getMonth() +
-    1 +
+    (new Date().getMonth() + 1) +
     '-' +
     new Date().getDate()
   var time = new Date().getHours() + ':' + new Date().getMinutes()
+  const [refreshing, setRefreshing] = React.useState(false)
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true)
+
+    wait(0).then(() => setRefreshing(false))
+  }, [])
 
   const total = cart.reduce((t, i) => t + i.qty * i.price, 0)
   const quantityHandler = (action, index) => {
@@ -68,6 +65,7 @@ const Screen = () => {
       newItems[index]['qty'] = currentQty > 1 ? currentQty - 1 : 1
     }
     setCart(newItems)
+    onRefresh()
   }
   function tabledata(item, index) {
     return (
@@ -102,6 +100,7 @@ const Screen = () => {
             >
               <TouchableOpacity onPress={() => {}} style={{ paddingRight: 10 }}>
                 <Image
+                  source={{ uri: 'data:image/jpeg;base64,' + item.Image }}
                   style={[
                     styles.centerElement,
                     { height: 60, width: 60, backgroundColor: '#eeeeee' },
@@ -160,7 +159,8 @@ const Screen = () => {
               <TouchableOpacity
                 style={[styles.centerElement, { width: 32, height: 32 }]}
                 onPress={() => {
-                  cart.splice(item, 1)
+                  cart.splice(index, 1)
+                  onRefresh()
                 }}
               >
                 <Ionicons name="md-trash" size={25} color="#ee4d2d" />
@@ -224,6 +224,9 @@ const Screen = () => {
   return (
     <View style={{ flex: 1, backgroundColor: '#f6f6f6' }}>
       <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         data={cart}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => <Text>{tabledata(item, index)}</Text>}
@@ -309,15 +312,22 @@ const Screen = () => {
             style={[
               styles.centerElement,
               {
-                backgroundColor: '#0faf9a',
+                backgroundColor: '#1c313a',
                 width: 100,
                 height: 25,
                 borderRadius: 5,
               },
             ]}
-            onPress={() => console.log('test')}
+            onPress={() => {
+              if (cart.length === 0) {
+                alert('there is no food in a cart')
+              } else {
+                order()
+                setCart([])
+              }
+            }}
           >
-            <Text style={{ color: '#ffffff' }}>Checkout</Text>
+            <Text style={{ color: '#ffffff' }}>Place Order</Text>
           </TouchableOpacity>
         </View>
       </View>

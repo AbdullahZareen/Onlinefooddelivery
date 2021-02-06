@@ -16,7 +16,9 @@ import ScheduleFood from '../screens/ScheduleFood'
 import showschadule from '../screens/ShowSchadule'
 import PickFood from '../screens/PickFood'
 import Orderfood from '../screens/OrderFoods'
-
+import Order from '../screens/OrdersTab'
+import RatingFood from '../screens/RatingFood'
+import MapScreen from '../screens/MapScreen'
 const HomeStackNavigator = ({ navigation }) => {
   const [isEnabled, setIsEnabled] = useState(false)
 
@@ -58,10 +60,24 @@ const HomeStackNavigator = ({ navigation }) => {
           headerRight: (props) => <Cart />,
         }}
       />
-      <Stack.Screen name="fooditem" component={FoodItemScreen} />
-      <Stack.Screen name="BillCal" component={BillScreen} />
+      <Stack.Screen
+        name="fooditem"
+        component={FoodItemScreen}
+        options={{
+          headerTitle: 'Food Items',
+          headerRight: (props) => <Cart />,
+        }}
+      />
+      <Stack.Screen
+        name="BillCal"
+        component={BillScreen}
+        options={{
+          headerTitle: 'Add to Cart',
+        }}
+      />
       <Stack.Screen name="Cart" component={CartScreen} />
       <Stack.Screen name="orderfood" component={Orderfood} />
+      <Stack.Screen name="orders" component={Order} />
 
       <Stack.Screen
         name="schadule"
@@ -106,6 +122,8 @@ const HomeStackNavigator = ({ navigation }) => {
         }}
       />
       <Stack.Screen name="pickfood" component={PickFood} />
+      <Stack.Screen name="rating" component={RatingFood} />
+      <Stack.Screen name="map" component={MapScreen} />
     </Stack.Navigator>
   )
 }

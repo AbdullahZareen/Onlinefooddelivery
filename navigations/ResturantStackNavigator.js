@@ -7,7 +7,7 @@ import AddFoodScreen from '../ResturantScreen/AddFoodScreen'
 import ResturantFoodScreen from '../ResturantScreen/ResturantFoodScreen'
 import ResturantFoodUpdate from '../ResturantScreen/ResutrantFoodUpdate'
 import scheduleorder from '../ResturantScreen/ScheduleOrder'
-import Orders from '../ResturantScreen/OrderTabs'
+import CurrentOrders from '../ResturantScreen/Currentorder'
 import ProfileScreen from '../ResturantScreen/ProfileScreen'
 import UpdateProfile from '../ResturantScreen/UpdateProfile'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -65,7 +65,7 @@ const ResturantStackNavigator = ({ navigation }) => {
       />
       <Stack.Screen name="AddFoodItem" component={AddFoodScreen} />
       <Stack.Screen name="update" component={ResturantFoodUpdate} />
-      <Stack.Screen name="ScheduleOrder" component={Orders} />
+      <Stack.Screen name="CurrentOrder" component={CurrentOrders} />
       <Stack.Screen
         name="Profile"
         component={ProfileScreen}

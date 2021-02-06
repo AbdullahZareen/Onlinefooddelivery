@@ -1,7 +1,10 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useState, useEffect, useContext } from 'react'
 import { Card, Title, Paragraph, Button } from 'react-native-paper'
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen'
 import {
   StyleSheet,
   Text,
@@ -39,7 +42,7 @@ export default function fooditem({ navigation, route }) {
           <Card key={item.fid.toString()} style={{ margin: 20 }}>
             <Card.Cover
               source={{ uri: 'data:image/jpeg;base64,' + item.fImagepath }}
-              style={{ width: 310, height: 100 }}
+              style={{ width: wp('75%'), height: 100 }}
             />
             <Card.Content>
               <Title>{item.fname}</Title>
@@ -75,7 +78,8 @@ export default function fooditem({ navigation, route }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: wp('6%'),
+    width: wp('100%'),
     backgroundColor: '#fff',
   },
 })

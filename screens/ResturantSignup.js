@@ -10,7 +10,10 @@ import {
   Image,
   Platform,
   ScrollView,
+  ToastAndroid,
 } from 'react-native'
+import * as Location from 'expo-location'
+
 import DropDownPicker from 'react-native-dropdown-picker'
 import { useUser } from '../Context/UserContext'
 export default function ResturantSignup() {
@@ -24,21 +27,41 @@ export default function ResturantSignup() {
   const [type, onchangetype] = useState('')
   const [image, onImagePick] = useState(null)
   const { ipaddress } = useUser()
+  const [location, setLocation] = useState(null)
+  const [latt, setlatt] = useState()
+  const [longi, setlongi] = useState()
+  const [errorMsg, setErrorMsg] = useState(null)
+
   useEffect(() => {
-    // ;(async () => {
-    //   if (Platform.OS !== 'web') {
-    //     const {
-    //       status,
-    //     } = await ImagePicker.requestMediaLibraryPermissionsAsync()
-    //     if (status !== 'granted') {
-    //       alert('Sorry, we need camera roll permissions to make this work!')
-    //     }
-    //   }
-    // })()
+    ;(async () => {
+      let { status } = await Location.requestPermissionsAsync()
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied')
+        return
+      }
+
+      let location = await Location.getCurrentPositionAsync({})
+      setlongi(JSON.stringify(location.coords.longitude))
+      setlatt(JSON.stringify(location.coords.latitude))
+      setLocation(location)
+    })()
   }, [])
+  let text = 'Waiting.' + (0 + 1) + ''
+  // if (errorMsg) {
+  //   text = errorMsg
+  // } else if (location) {
+  //   text = JSON.stringify(location.coords.latitude)
+  // }
+  console.log(longi)
+  console.log(latt)
+
   const Postdata = () => {
     if (image == null) {
-      alert('fill the feilds')
+      ToastAndroid.showWithGravity(
+        'Fill The Field',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      )
     } else {
       try {
         let result = fetch(
@@ -59,10 +82,16 @@ export default function ResturantSignup() {
               Category: type,
               ownername: oname,
               rcnumber: number,
+              rclattitude: latt,
+              rclongitude: longi,
             }),
           }
         )
-        alert('saved')
+        ToastAndroid.showWithGravity(
+          'Saved',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        )
       } catch (e) {
         console.log(e)
       }

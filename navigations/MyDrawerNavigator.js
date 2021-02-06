@@ -1,5 +1,4 @@
 import React from 'react'
-import NewCart from '../screens/NewCart'
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -8,15 +7,12 @@ import {
 } from '@react-navigation/drawer'
 //import TabNavigator from './TabNavigator'
 import { useUser } from '../Context/UserContext'
-import LoginStackNavigator from './LoginStackNavigator'
 import HomeStackNavigator from './HomeStackNavigator'
-import ResturatStackNavigator from './ResturantStackNavigator'
 import { DrawerContent } from '../components/DrawerContent'
 import AsyncStorage from '@react-native-community/async-storage'
 import ProfileScreen from '../screens/ProfileScreen'
 import { NavigationContainer } from '@react-navigation/native'
 import Orderdetail from '../screens/Orderdetail'
-import Setting from '../screens/SettingScreen'
 const Drawer = createDrawerNavigator()
 
 export default function MyDrawerNavigator() {
@@ -37,8 +33,21 @@ export default function MyDrawerNavigator() {
             <DrawerItemList {...props} />
             <DrawerItem label="Logout" onPress={logoutAction} />
             <DrawerItem
+              label="Rating"
+              onPress={() => props.navigation.navigate('rating')}
+            />
+
+            <DrawerItem
+              label="Orders"
+              onPress={() => props.navigation.navigate('orders')}
+            />
+            <DrawerItem
               label="Schedule"
               onPress={() => props.navigation.navigate('showschadule')}
+            />
+            <DrawerItem
+              label="Maps"
+              onPress={() => props.navigation.navigate('map')}
             />
           </DrawerContentScrollView>
         )
@@ -49,8 +58,6 @@ export default function MyDrawerNavigator() {
       <Drawer.Screen name="Resturant" component={ResturatStackNavigator} /> */}
       <Drawer.Screen name="Profile" component={ProfileScreen} />
       <Drawer.Screen name="OrderDetail" component={Orderdetail} />
-      <Drawer.Screen name="setting" component={Setting} />
-      <Drawer.Screen name="newcart" component={NewCart} />
     </Drawer.Navigator>
   )
 }

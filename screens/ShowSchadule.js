@@ -14,6 +14,20 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen'
 import DropDownPicker from 'react-native-dropdown-picker'
+import {
+  Container,
+  Header,
+  Content,
+  List,
+  ListItem,
+  Left,
+  Body,
+  Right,
+  Thumbnail,
+  SwipeRow,
+} from 'native-base'
+import { LogBox } from 'react-native'
+LogBox.ignoreLogs(['Warning: ...'])
 export default function show({ navigation }) {
   const { user, ipaddress } = useUser()
   const [data, setdata] = useState()
@@ -25,60 +39,8 @@ export default function show({ navigation }) {
         setdata(json)
       })
       .catch((error) => alert(error))
-  }, [isFocused])
-  console.log(data)
-  const carddata = (item) => {
-    return (
-      <View
-        style={{
-          alignItems: 'center',
-          width: 350,
-          marginTop: 10,
-          marginLeft: 20,
-          justifyContent: 'center',
-        }}
-      >
-        <Card style={{ margin: 20, width: 300, alignItems: 'center' }}>
-          <Card.Cover
-            source={{ uri: 'data:image/jpeg;base64,' + item.fImagepath }}
-            style={{ width: 300, height: 100 }}
-          />
-          <Card.Content style={{}}>
-            <Title>Food :{item.fName}</Title>
-            <View style={{ flexDirection: 'row' }}>
-              <Paragraph style={{ marginRight: 20 }}>
-                meal :{item.Routinetype}
-              </Paragraph>
-              <Paragraph>Day:{item.Deleiveryday}</Paragraph>
-            </View>
-            <View style={{ flexDirection: 'row', marginRight: 20 }}>
-              <Paragraph style={{ marginRight: 20 }}>
-                time :{item.dtime}
-              </Paragraph>
-              <Paragraph>price: {item.fprice}</Paragraph>
-            </View>
-
-            <Card.Actions
-              style={{
-                flexDirection: 'row',
-                borderWidth: 1,
-                alignItems: 'center',
-              }}
-            >
-              <Button
-                onPress={() => {
-                  deleteschedule(item.mid)
-                  alert('Menu deleted')
-                }}
-              >
-                Delete
-              </Button>
-            </Card.Actions>
-          </Card.Content>
-        </Card>
-      </View>
-    )
-  }
+    return () => setdata(null)
+  }, [])
   const [daydata, setdaydata] = useState()
   function dropdowndaysearch(day) {
     fetch(
@@ -101,34 +63,38 @@ export default function show({ navigation }) {
   }
   return (
     <View style={styles.mainConatinerStyle}>
-      <DropDownPicker
-        items={[
-          { label: 'Monday', value: 'Monday' },
-          { label: 'Tuesday', value: 'Tuesday' },
-          { label: 'Wednesday', value: 'Wednesday' },
-          { label: 'Thurday', value: 'Thursday' },
-          { label: 'Friday', value: 'Friday' },
-        ]}
-        containerStyle={{ height: 40 }}
-        style={{
-          backgroundColor: '#fafafa',
-          width: 350,
-          justifyContent: 'center',
-        }}
-        itemStyle={{
-          justifyContent: 'flex-start',
-        }}
-        dropDownStyle={{ backgroundColor: '#fafafa' }}
-        onChangeItem={(day) => {
-          dropdowndaysearch(day.value)
-        }}
-      />
       <View>
         <FlatList
           data={data}
           //  keyExtractor={(item) => item.fid.toString()}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => <Text>{carddata(item)}</Text>}
+          renderItem={({ item }) => (
+            <List>
+              <ListItem avatar>
+                <Left>
+                  <Thumbnail
+                    source={{ uri: 'data:image/jpeg;base64,' + item.FImage }}
+                  />
+                </Left>
+
+                <Body>
+                  <Text style={{ fontWeight: 'bold' }}>Food name:</Text>
+                  <Text>Qty: </Text>
+                  <Text>Meal:</Text>
+                  <Text>Day: </Text>
+                </Body>
+                <Body>
+                  <Text style={{ fontWeight: 'bold' }}>{item.fName}</Text>
+                  <Text>{item.quantity}</Text>
+                  <Text>{item.Routinetype}</Text>
+                  <Text>{item.Deleiveryday}</Text>
+                </Body>
+                <Right>
+                  <Text note>{item.dtime}</Text>
+                </Right>
+              </ListItem>
+            </List>
+          )}
         />
       </View>
       <TouchableOpacity

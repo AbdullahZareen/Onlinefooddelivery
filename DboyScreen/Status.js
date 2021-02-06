@@ -1,10 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Button } from 'react-native'
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen'
+import { useUser } from '../Context/UserContext'
 export default function status({ navigation }) {
+  const [data, setData] = useState()
+  const { ipaddress, user } = useUser()
+  useEffect(() => {
+    fetch(
+      'http://' +
+        ipaddress +
+        '/fypapi/api/deliveryboy/Dboyprofile?id=' +
+        user.u_id +
+        ''
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        setData(json)
+      })
+      .catch((error) => alert(error))
+  }, [])
+  console.log(data)
+  const postupdates = {}
+
   return (
     <View style={styles.mainConatinerStyle}>
       <View
@@ -29,7 +49,6 @@ export default function status({ navigation }) {
         }}
       >
         <Text>Press start to start shift</Text>
-
         <Text>Time</Text>
         <Text style={styles.text1}>16:00-20:00</Text>
         <Text>Zone</Text>

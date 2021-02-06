@@ -6,7 +6,6 @@ import LoginStackNavigator from './LoginStackNavigator'
 import HomeStackNavigator from './HomeStackNavigator'
 import ResturatStackNavigator from './ResturantStackNavigator'
 import { DrawerContent } from '../components/DrawerContent'
-import ProfileScreen from '../ResturantScreen/ProfileScreen'
 import AsyncStorage from '@react-native-community/async-storage'
 import {
   createDrawerNavigator,
@@ -42,7 +41,7 @@ const ResturantDrawerNavigator = () => {
 
             <DrawerItem
               label="Orders"
-              onPress={() => props.navigation.navigate('ScheduleOrder')}
+              onPress={() => props.navigation.navigate('CurrentOrder')}
             />
           </DrawerContentScrollView>
         )

@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, FlatList, Button } from 'react-native'
 import { useUser } from '../Context/UserContext'
+import { DataTable } from 'react-native-paper'
+import {
+  Card,
+  Title,
+  Paragraph,
+  ActivityIndicator,
+  Searchbar,
+} from 'react-native-paper'
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -23,47 +31,42 @@ const Screen = ({ navigation }) => {
       .catch((error) => alert(error))
   }, [])
   console.log(data)
+  const acceptupdate = (id) => {
+    fetch('http://' + ipaddress + '/fypapi/api/resturant/acceptupdate', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        oid: id,
+        acceptstatus: false,
+      }),
+    })
+  }
+
   return (
     <View style={styles.container}>
-      <Text>current orders</Text>
-      {/* <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>
-        Order Details
-      </Text>
       {data == null ? (
         // <Image source={require('../components/images/norder.png')} />
         <Text>nodata</Text>
       ) : (
         <View>
-          <DataTable.Header>
-            <DataTable.Title>Orderdate</DataTable.Title>
-            <DataTable.Title>Ordertime</DataTable.Title>
-            <DataTable.Title>Bill</DataTable.Title>
-            <DataTable.Title></DataTable.Title>
-          </DataTable.Header>
-
           <FlatList
             data={data}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
-              <DataTable>
-                <DataTable.Row>
-                  <DataTable.Cell>{item.odate}</DataTable.Cell>
-                  <DataTable.Cell>{item.odeliverytime}</DataTable.Cell>
-                  <DataTable.Cell>{item.Totalbill}</DataTable.Cell>
-                  <DataTable.Cell>
-                    <Button
-                      title="Detail"
-                      onPress={() =>
-                        navigation.navigate('orderfood', { paramkey: item.oid })
-                      }
-                    />
-                  </DataTable.Cell>
-                </DataTable.Row>
-              </DataTable>
+              <Card style={{ margin: 20 }}>
+                <Card.Content>
+                  <Title>Customer Name :{item.cname}</Title>
+                  <Paragraph>Food Name :{item.fName}</Paragraph>
+                  <Paragraph>Quantity :{item.foodQantity}</Paragraph>
+                </Card.Content>
+              </Card>
             )}
           />
         </View>
-      )} */}
+      )}
     </View>
   )
 }
@@ -76,5 +79,4 @@ const styles = StyleSheet.create({
     height: hp('100%'),
   },
 })
-
 export default Screen

@@ -6,6 +6,8 @@ import {
   FlatList,
   TouchableOpacity,
   ImageBackground,
+  RefreshControl,
+  ToastAndroid,
 } from 'react-native'
 import { useUser } from '../Context/UserContext'
 import {
@@ -17,13 +19,24 @@ import {
   Portal,
 } from 'react-native-paper'
 import { useIsFocused } from '@react-navigation/native'
-
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout)
+  })
+}
 export default function ResturantFoodScreen({ navigation }) {
   const isFocused = useIsFocused()
 
   const [data, setData] = useState()
   const { user, setUser, ipaddress } = useUser()
   const id = user.u_id
+
+  const [refreshing, setRefreshing] = React.useState(false)
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true)
+
+    wait(1000).then(() => setRefreshing(false))
+  }, [])
 
   useEffect(() => {
     fetch(
@@ -38,15 +51,22 @@ export default function ResturantFoodScreen({ navigation }) {
         setData(json)
       })
       .catch((error) => alert(error))
+    return () => setData(null)
   }, [isFocused])
 
-  function deletefood(id) {
+  function deletefood(id, index) {
     fetch(
       'http://' + ipaddress + '/fypapi/api/fooditem/deletefood?fid=' + id + ''
     )
-    alert('delete permanent')
+    ToastAndroid.showWithGravity(
+      'Food Delete ',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER
+    )
+    data.splice(index, 1)
+    onRefresh()
   }
-  const carddata = (item) => {
+  const carddata = (item, index) => {
     return (
       <View style={{}}>
         <Card key={item.fid.toString()} style={{ margin: 20 }}>
@@ -69,7 +89,7 @@ export default function ResturantFoodScreen({ navigation }) {
             >
               <Button>Edit</Button>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => deletefood(item.fid)}>
+            <TouchableOpacity onPress={() => deletefood(item.fid, index)}>
               <Button>Delete</Button>
             </TouchableOpacity>
           </Card.Actions>
@@ -97,9 +117,12 @@ export default function ResturantFoodScreen({ navigation }) {
       </TouchableOpacity>
       <View style={{}}></View>
       <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         data={data}
         keyExtractor={(item) => item.fid.toString()}
-        renderItem={({ item }) => <Text>{carddata(item)}</Text>}
+        renderItem={({ item, index }) => <Text>{carddata(item, index)}</Text>}
       />
     </View>
   )

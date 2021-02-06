@@ -12,7 +12,7 @@ import {
 import * as ImagePicker from 'expo-image-picker'
 import { useUser } from '../Context/UserContext'
 
-export default function AddFoodScreen() {
+export default function AddFoodScreen({ navigation }) {
   const [image, onImagePick] = useState(null)
   const [fname, setfname] = useState()
   const [type, settype] = useState()
@@ -56,6 +56,7 @@ export default function AddFoodScreen() {
     } catch (e) {
       console.log(e)
     }
+    navigation.navigate('Home')
   }
   return (
     <View style={styles.container}>

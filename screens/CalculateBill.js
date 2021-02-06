@@ -54,18 +54,19 @@ export default function calculate({ navigation, route }) {
       <View>
         <TouchableOpacity
           style={styles.btnbox}
-          onPress={() =>
+          onPress={() => {
             setCart((current) => [
               ...current,
               {
-                key: k + 1,
+                Image: food.fImagepath,
                 id: food.fid,
                 name: food.fname,
                 price: food.fprice,
                 qty: qval,
               },
             ])
-          }
+            navigation.navigate('fooditem')
+          }}
         >
           <Text style={styles.btntext}>Add</Text>
         </TouchableOpacity>

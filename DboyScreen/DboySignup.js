@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import * as ImagePicker from 'expo-image-picker'
+import * as Location from 'expo-location'
+
 import {
   StyleSheet,
   Text,
@@ -10,10 +12,11 @@ import {
   Image,
   Platform,
   ScrollView,
+  ToastAndroid,
 } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { useUser } from '../Context/UserContext'
-export default function ResturantSignup() {
+export default function ResturantSignup({ navigation }) {
   const [name, onchangename] = useState('')
   const [number, onchangenumber] = useState('')
   const [address, onchangeadress] = useState('')
@@ -23,20 +26,34 @@ export default function ResturantSignup() {
   const [image, onImagePick] = useState(null)
   const [bikenumber, setbikenumber] = useState('')
   const { ipaddress } = useUser()
+  const [location, setLocation] = useState(null)
+  const [latt, setlatt] = useState()
+  const [longi, setlongi] = useState()
+  const [errorMsg, setErrorMsg] = useState(null)
+
   useEffect(() => {
-    // ;(async () => {
-    //   if (Platform.OS !== 'web') {
-    //     const {
-    //       status,
-    //     } = await ImagePicker.requestMediaLibraryPermissionsAsync()
-    //     if (status !== 'granted') {
-    //       alert('Sorry, we need camera roll permissions to make this work!')
-    //     }
-    //   }
-    // })()
+    ;(async () => {
+      let { status } = await Location.requestPermissionsAsync()
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied')
+        return
+      }
+
+      let location = await Location.getCurrentPositionAsync({})
+      setlongi(JSON.stringify(location.coords.longitude))
+      setlatt(JSON.stringify(location.coords.latitude))
+      setLocation(location)
+    })()
   }, [])
+  let text = 'Waiting.' + (0 + 1) + ''
+  if (errorMsg) {
+    text = errorMsg
+    console.log(text)
+  }
+  console.log(longi)
+  console.log(latt)
   const Postdata = () => {
-    if ((password == '') | (email == '') | (image == null)) {
+    if ((password == '') | (email == '')) {
       alert('fill the feilds')
     } else {
       try {
@@ -56,13 +73,20 @@ export default function ResturantSignup() {
               dnumber: number,
               demail: email,
               dpassword: password,
+              dlattitude: latt,
+              dlongitude: longi,
             }),
           }
         )
-        alert('saved')
+        ToastAndroid.showWithGravity(
+          'Account Saved ',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        )
       } catch (e) {
         console.log(e)
       }
+      navigation.navigate('Login')
     }
   }
 
@@ -80,19 +104,6 @@ export default function ResturantSignup() {
   }
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.setText}>Image</Text>
-
-      {image !== null ? (
-        <Image
-          source={{ uri: image }}
-          style={{ width: 350, height: 100, alignItems: 'center' }}
-        />
-      ) : null}
-      <Button
-        style={{ Color: '#1c313a' }}
-        title="Browse Image"
-        onPress={pickImage}
-      />
       <Text style={styles.setText}>Name</Text>
       <TextInput style={styles.inputBox} onChangeText={onchangename} />
       <Text style={styles.setText}>Phone Number</Text>

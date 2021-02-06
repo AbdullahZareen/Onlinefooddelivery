@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -110,
+    marginTop: -130,
   },
   container1: {
     alignItems: 'center',

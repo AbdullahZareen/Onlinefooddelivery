@@ -1,9 +1,8 @@
 import React from 'react'
 import { Container, Header, Tab, Tabs, ScrollableTab, Text } from 'native-base'
 import Tab1 from './Orderdetail'
-import Tab2 from './Orderdetail'
 
-const Screen = ({ navigation }) => {
+const Screen = () => {
   return (
     <Container style={{ paddingTop: 30 }}>
       <Tabs tabBarUnderlineStyle={{ backgroundColor: '#B0E0E6' }}>
@@ -11,7 +10,7 @@ const Screen = ({ navigation }) => {
           heading="Tab1"
           activeTextStyle={{ color: 'black', fontWeight: 'bold' }}
           textStyle={{ color: 'black', fontSize: 12 }}
-          tabStyle={{ backgroundColor: '#fff' }}
+          tabStyle={[{ backgroundColor: '#fff' }]}
           activeTabStyle={{ backgroundColor: '#fff' }}
         >
           <Tab1 />
@@ -23,9 +22,7 @@ const Screen = ({ navigation }) => {
           textStyle={{ color: 'black', fontSize: 12 }}
           tabStyle={{ backgroundColor: '#fff' }}
           activeTabStyle={{ backgroundColor: '#fff' }}
-        >
-          <Tab1 />
-        </Tab>
+        ></Tab>
       </Tabs>
     </Container>
   )

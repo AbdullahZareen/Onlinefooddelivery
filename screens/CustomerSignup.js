@@ -5,7 +5,9 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native'
+import * as Location from 'expo-location'
 import { useUser } from '../Context/UserContext'
 import DropDownPicker from 'react-native-dropdown-picker'
 export default function UserSignup() {
@@ -15,30 +17,62 @@ export default function UserSignup() {
   const [password, onchangepassword] = useState('')
   const [email, onChangeemail] = useState('')
   const [city, oncitychange] = useState('')
+  const [location, setLocation] = useState(null)
+  const [latt, setlatt] = useState()
+  const [longi, setlongi] = useState()
+  const [errorMsg, setErrorMsg] = useState(null)
+
+  useEffect(() => {
+    ;(async () => {
+      let { status } = await Location.requestPermissionsAsync()
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied')
+        return
+      }
+      let location = await Location.getCurrentPositionAsync({})
+      setlongi(JSON.stringify(location.coords.longitude))
+      setlatt(JSON.stringify(location.coords.latitude))
+      setLocation(location)
+    })()
+  }, [])
+  let text = 'Waiting.' + (0 + 1) + ''
+  if (errorMsg) {
+    text = errorMsg
+    alert('permission are not granted')
+  }
+  console.log(longi)
+  console.log(latt)
   const Postdata = () => {
     if (password == '' && email == '') {
-      alert('fill the feilds')
+      ToastAndroid.showWithGravity(
+        'Fill The Field',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      )
     } else {
       try {
-        let result = fetch(
-          'http://' + ipaddress + '/fypapi/api/customers/addcustomers',
-          {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              cname: name,
-              cemail: email,
-              cAddrees: address,
-              ccity: city,
-              cnumber: number,
-              cpassword: password,
-            }),
-          }
+        fetch('http://' + ipaddress + '/fypapi/api/customers/addcustomers', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            cname: name,
+            cemail: email,
+            cAddrees: address,
+            ccity: city,
+            cnumber: number,
+            cpassword: password,
+            clongitude: parseFloat(longi),
+            clattitude: parseFloat(latt),
+          }),
+        })
+        ToastAndroid.showWithGravity(
+          'Saved',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
         )
-        alert('saved')
       } catch (e) {
         console.log(e)
       }
@@ -96,7 +130,6 @@ const styles = StyleSheet.create({
     margin: 5,
     flexGrow: 1,
     backgroundColor: '#fff',
-    marginTop: 50,
   },
   setText: {
     marginLeft: 10,
