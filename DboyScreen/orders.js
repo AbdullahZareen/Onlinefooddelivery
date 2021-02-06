@@ -18,51 +18,28 @@ const Screen = ({ navigation }) => {
   const [food, setfood] = useState()
   const { ipaddress, user } = useUser()
   useEffect(() => {
-    fetch(
-      'http://' +
-        ipaddress +
-        '/fypapi/api/resturant/resturantsimpleorder?id=' +
-        user.u_id +
-        ''
-    )
+    fetch('http://' + ipaddress + '/fypapi/api/deliveryboy/dboyorder')
       .then((response) => response.json())
       .then((json) => {
         setdata(json)
       })
       .catch((error) => alert(error))
   }, [])
-  console.log(data)
-  const foodi = (id) => {
-    fetch(
-      'http://' +
-        ipaddress +
-        '/fypapi/api/resturant/currentorderdetail?id=' +
-        id +
-        ''
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        setfood(json)
-      })
-      .catch((error) => alert(error))
-  }
-  const acceptupdate = (id) => {
-    fetch('http://' + ipaddress + '/fypapi/api/resturant/acceptupdate', {
+
+  const statusupdate = (item) => {
+    fetch('http://' + ipaddress + '/fypapi/api/deliveryboy/updateorderstatus', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        oid: id,
-        acceptstatus: true,
-        rid: user.u_id,
+        oid: item.oid,
+        status: 'pending',
+        did: user.u_id,
       }),
     })
-      .then((response) => response.json())
-      .then((json) => {
-        alert(json)
-      })
+    navigation.navigate('PICKUPDETAIL', { paramkey: item })
   }
 
   return (
@@ -79,17 +56,14 @@ const Screen = ({ navigation }) => {
               <Card style={{ margin: 20 }}>
                 <Card.Content>
                   <Title>
-                    {'Name :'}
-                    {item.cname}
-                  </Title>
-                  <Title>
                     {'Ordernumber :'}
                     {item.oid}
                   </Title>
-                  <Button
-                    title="Accept"
-                    onPress={() => acceptupdate(item.oid)}
-                  />
+                  <Paragraph>
+                    {'Name :'}
+                    {item.rcname}
+                  </Paragraph>
+                  <Button title="Accept" onPress={() => statusupdate(item)} />
                 </Card.Content>
               </Card>
             )}

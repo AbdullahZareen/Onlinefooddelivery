@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Button } from 'react-native'
+import { View, Text, StyleSheet, Button, ActivityIndicator } from 'react-native'
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -8,6 +8,8 @@ import { useUser } from '../Context/UserContext'
 export default function status({ navigation }) {
   const [data, setData] = useState()
   const { ipaddress, user } = useUser()
+  const [isLoading, setLoading] = useState(true)
+
   useEffect(() => {
     fetch(
       'http://' +
@@ -18,13 +20,53 @@ export default function status({ navigation }) {
     )
       .then((response) => response.json())
       .then((json) => {
-        setData(json)
+        setData(json[0])
       })
       .catch((error) => alert(error))
   }, [])
+  setTimeout(() => {
+    setLoading(false)
+  }, 4000)
+  if (isLoading) {
+    return <ActivityIndicator size="large" color={'blue'} />
+  }
   console.log(data)
+  const statusupdate = (action, id) => {
+    if (action == 'ready') {
+      fetch('http://' + ipaddress + '/fypapi/api/deliveryboy/statsupdate', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          did: id,
+          WorkingStatus: true,
+        }),
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          alert('Ready')
+        })
+    } else if (action == 'notready') {
+      fetch('http://' + ipaddress + '/fypapi/api/deliveryboy/statsupdate', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          did: id,
+          WorkingStatus: false,
+        }),
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          alert('Not Ready')
+        })
+    }
+  }
   const postupdates = {}
-
   return (
     <View style={styles.mainConatinerStyle}>
       <View
@@ -38,11 +80,15 @@ export default function status({ navigation }) {
         }}
       >
         <Text style={styles.text}> Current status</Text>
-        <Text>Starting soon</Text>
+        {data.WorkingStatus !== true ? (
+          <Text>Starting soon</Text>
+        ) : (
+          <Text>Ready</Text>
+        )}
       </View>
       <View
         style={{
-          height: hp('30%'),
+          height: hp('50%'),
           width: wp('100%'),
           borderWidth: 1,
           padding: 20,
@@ -55,7 +101,11 @@ export default function status({ navigation }) {
         <Text style={styles.text1}>Khana pul</Text>
         <Button
           title="Start"
-          onPress={() => navigation.navigate('status1')}
+          onPress={() => statusupdate('ready', data.did)}
+        ></Button>
+        <Button
+          title="End"
+          onPress={() => statusupdate('notready', data.did)}
         ></Button>
       </View>
     </View>

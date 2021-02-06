@@ -14,7 +14,7 @@ import { NavigationContainer } from '@react-navigation/native'
 
 const Drawer = createDrawerNavigator()
 
-export default function MyDrawerNavigator() {
+export default function MyDrawerNavigator({ navigation }) {
   const { setUser, setIsLoggedIn } = useUser()
 
   const logoutAction = async () => {
@@ -31,6 +31,10 @@ export default function MyDrawerNavigator() {
           <DrawerContentScrollView {...props}>
             <DrawerItemList {...props} />
             <DrawerItem label="Logout" onPress={logoutAction} />
+            <DrawerItem
+              label="Orders"
+              onPress={() => props.navigation.navigate('order')}
+            />
           </DrawerContentScrollView>
         )
       }}
