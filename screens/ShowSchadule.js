@@ -6,6 +6,7 @@ import {
   Text,
   FlatList,
 } from 'react-native'
+import { MaterialIcons, Ionicons } from 'react-native-vector-icons'
 import { useIsFocused } from '@react-navigation/native'
 import { Card, Paragraph, Title, Button } from 'react-native-paper'
 import { useUser } from '../Context/UserContext'
@@ -89,9 +90,7 @@ export default function show({ navigation }) {
                   <Text>{item.Routinetype}</Text>
                   <Text>{item.Deleiveryday}</Text>
                 </Body>
-                <Right>
-                  <Text note>{item.dtime}</Text>
-                </Right>
+                <Right></Right>
               </ListItem>
             </List>
           )}

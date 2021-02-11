@@ -186,6 +186,8 @@ const Screen = () => {
           status: 'pending',
           Totalbill: total,
           cid: user.u_id,
+          SchduleStatus: false,
+          activatestatus: true,
         }),
       })
         .then((response) => response.json())

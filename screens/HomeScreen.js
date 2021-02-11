@@ -24,11 +24,14 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen'
+import { useIsFocused } from '@react-navigation/native'
 export default function Home({ navigation, route }) {
   const [isLoading, setLoading] = useState(false)
   const [data, setData] = useState([])
   const { user, setUser, ipaddress } = useUser()
   const [value, setvalue] = useState(null)
+  const isFocused = useIsFocused()
+
   const wait = (timeout) => {
     return new Promise((resolve) => {
       setTimeout(resolve, timeout)
@@ -48,8 +51,8 @@ export default function Home({ navigation, route }) {
         setData(json)
       })
       .catch((error) => alert(error))
-  }, [])
-
+    return () => setData(null)
+  }, [isFocused])
   function searchresturant(svalue) {
     // const search = data.filter(
     //   (element) => element.rcname.toLowerCase() === value.toLowerCase()
@@ -116,6 +119,21 @@ export default function Home({ navigation, route }) {
             }}
             onChangeText={setvalue}
           />
+          <TouchableOpacity
+            //     onPress={() => navigation.navigate('showschadule')}
+            onPress={() => {
+              searchresturant(value)
+            }}
+            style={{
+              margin: 10,
+              width: 50,
+              borderWidth: 1,
+              borderColor: 'black',
+              borderRadius: 10,
+            }}
+          >
+            <Text>Search</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             //     onPress={() => navigation.navigate('showschadule')}
             onPress={() => {

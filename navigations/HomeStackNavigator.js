@@ -19,6 +19,7 @@ import Orderfood from '../screens/OrderFoods'
 import Order from '../screens/OrdersTab'
 import RatingFood from '../screens/RatingFood'
 import MapScreen from '../screens/MapScreen'
+import ScheduleCart from '../screens/ScheduleCart'
 const HomeStackNavigator = ({ navigation }) => {
   const [isEnabled, setIsEnabled] = useState(false)
 
@@ -84,8 +85,10 @@ const HomeStackNavigator = ({ navigation }) => {
         component={Schadule}
         options={{
           headerTitle: 'Add Schadule',
-          headerRight: () => (
-            <TouchableOpacity>
+          headerRight: (props) => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ScheduleCart')}
+            >
               <Text
                 style={{ marginRight: 20, fontWeight: 'bold', fontSize: 18 }}
               >
@@ -124,6 +127,7 @@ const HomeStackNavigator = ({ navigation }) => {
       <Stack.Screen name="pickfood" component={PickFood} />
       <Stack.Screen name="rating" component={RatingFood} />
       <Stack.Screen name="map" component={MapScreen} />
+      <Stack.Screen name="ScheduleCart" component={ScheduleCart} />
     </Stack.Navigator>
   )
 }

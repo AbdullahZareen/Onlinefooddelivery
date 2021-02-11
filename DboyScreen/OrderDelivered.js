@@ -18,6 +18,28 @@ import { Card, Title, Paragraph, Searchbar, Divider } from 'react-native-paper'
 export default function Delivered({ navigation, route }) {
   const item = route.params.paramkey
   console.log(item)
+  var date =
+    new Date().getFullYear() +
+    '-' +
+    (new Date().getMonth() + 1) +
+    '-' +
+    new Date().getDate()
+  var time = new Date().getHours() + ':' + new Date().getMinutes()
+
+  const statusupdate = (item) => {
+    fetch('http://' + ipaddress + '/fypapi/api/deliveryboy/updateorderstatus', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        oid: item.oid,
+        status: 'Delivered',
+      }),
+    })
+    navigation.navigate('PICKUPDETAIL', { paramkey: item })
+  }
   return (
     <View style={styles.mainConatinerStyle}>
       <Card style={{ margin: 20 }}>
@@ -25,7 +47,11 @@ export default function Delivered({ navigation, route }) {
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('resturantmap', {
-                paramkey: { lat: item.rclattitude, long: item.rclongitude },
+                paramkey: {
+                  lat: parseFloat(item.clattitude),
+                  long: parseFloat(item.clongitude),
+                  title: 'Customer',
+                },
               })
             }
           >
@@ -35,26 +61,30 @@ export default function Delivered({ navigation, route }) {
               </Title>
               <Image
                 style={styles.logo}
-                source={require('../components/images/resturant.png')}
+                source={require('../components/images/person.png')}
               />
             </View>
-            <Paragraph></Paragraph>
-            <Paragraph></Paragraph>
+            <Paragraph>
+              {'Name    : '}
+              {item.cname}
+            </Paragraph>
+            <Paragraph>
+              {'Address  : '}
+              {item.cAddrees}
+            </Paragraph>
             <Paragraph></Paragraph>
           </TouchableOpacity>
           <Divider style={{ borderWidth: 1 }} />
-          <Title>{'Customer Name :'}</Title>
+          <Title>{'Collect Cash'}</Title>
           <Paragraph>
-            {item.cname}
-            {'\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t'}
-            {item.Totalbill} PKR
+            {' Collect Cash from customer\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t'}
           </Paragraph>
 
           <Divider style={{ borderWidth: 1 }} />
           <Paragraph></Paragraph>
           <Paragraph></Paragraph>
           <TouchableOpacity style={{ marginTop: 30 }}>
-            <Button title="pickup" />
+            <Button title="Delivered" />
           </TouchableOpacity>
         </Card.Content>
       </Card>

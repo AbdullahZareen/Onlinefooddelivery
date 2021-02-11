@@ -6,6 +6,8 @@ import Deliveries from '../DboyScreen/Deliveries'
 import Order from '../DboyScreen/orders'
 import Pickuporder from '../DboyScreen/OrderPickup'
 import ResturantMap from '../DboyScreen/ResturantMap'
+import OrderDelivered from '../DboyScreen/OrderDelivered'
+
 const Stack = createStackNavigator()
 
 const ProfileStackNavigator = () => {
@@ -29,6 +31,7 @@ const ProfileStackNavigator = () => {
       <Stack.Screen name="order" component={Order} />
       <Stack.Screen name="PICKUPDETAIL" component={Pickuporder} />
       <Stack.Screen name="resturantmap" component={ResturantMap} />
+      <Stack.Screen name="DROPOFFDETAIL" component={OrderDelivered} />
     </Stack.Navigator>
   )
 }

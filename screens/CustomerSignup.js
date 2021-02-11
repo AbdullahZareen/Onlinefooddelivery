@@ -24,11 +24,11 @@ export default function UserSignup() {
 
   useEffect(() => {
     ;(async () => {
-      let { status } = await Location.requestPermissionsAsync()
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied')
-        return
-      }
+      //   let { status } = await Location.requestPermissionsAsync()
+      //   if (status !== 'granted') {
+      //     setErrorMsg('Permission to access location was denied')
+      //     return
+      //   }
       let location = await Location.getCurrentPositionAsync({})
       setlongi(JSON.stringify(location.coords.longitude))
       setlatt(JSON.stringify(location.coords.latitude))

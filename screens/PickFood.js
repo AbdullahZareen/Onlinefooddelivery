@@ -11,6 +11,7 @@ export default function calculate({ navigation, route }) {
   const { cart, setCart } = useCart()
   const food = route.params.paramkey
   const k = cart.length
+  console.log(food.fid)
   return (
     <View style={styles.container}>
       <Text
@@ -48,7 +49,13 @@ export default function calculate({ navigation, route }) {
         <TouchableOpacity
           style={styles.btnbox}
           onPress={() => {
-            pickfood.push({ fid: food.fid, qty: qval })
+            pickfood.push({
+              fid: food.fid,
+              name: food.name,
+              qty: qval,
+              img: food.Imagepath,
+              price: food.price,
+            })
             alert('one product added')
             navigation.navigate('schadule')
           }}

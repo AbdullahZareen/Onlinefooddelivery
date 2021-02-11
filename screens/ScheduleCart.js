@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { MaterialIcons, Ionicons } from 'react-native-vector-icons'
 import {
-  MaterialIcons,
-  AntDesign,
-  Ionicons,
-  MaterialCommunityIcons,
-} from 'react-native-vector-icons'
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen'
 import {
+  RefreshControl,
   StyleSheet,
   Button,
   Text,
@@ -16,26 +16,72 @@ import {
   ActivityIndicator,
   TextInput,
   Alert,
+  SafeAreaView,
+  FlatList,
 } from 'react-native'
 
-export default function mycart() {
-  return (
-    <View style={{ flex: 1, backgroundColor: '#f6f6f6', paddingTop: 30 }}>
-      <ScrollView>
+import { useSchedule } from '../Context/Schedulecontext'
+import { useUser } from '../Context/UserContext'
+import { LogBox } from 'react-native'
+
+LogBox.ignoreLogs(['VirtualizedLists should never be nested'])
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout)
+  })
+}
+const Screen = () => {
+  const { pickfood, setPickfood } = useSchedule()
+  const { user, ipaddress } = useUser()
+  const [result, setResult] = useState()
+  var date =
+    new Date().getFullYear() +
+    '-' +
+    (new Date().getMonth() + 1) +
+    '-' +
+    new Date().getDate()
+  var time = new Date().getHours() + ':' + new Date().getMinutes()
+  const [refreshing, setRefreshing] = React.useState(false)
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true)
+
+    wait(0).then(() => setRefreshing(false))
+  }, [])
+
+  const total = pickfood.reduce((t, i) => t + i.qty * i.price, 0)
+  const quantityHandler = (action, index) => {
+    const newItems = pickfood // clone the array
+
+    let currentQty = newItems[index]['qty']
+
+    if (action == 'more') {
+      newItems[index]['qty'] = currentQty + 1
+    } else if (action == 'less') {
+      newItems[index]['qty'] = currentQty > 1 ? currentQty - 1 : 1
+    }
+    setPickfood(newItems)
+    onRefresh()
+  }
+  function tabledata(item, index) {
+    return (
+      <View style={{ flex: 1, backgroundColor: '#f6f6f6' }}>
         <View
           style={{
             flexDirection: 'row',
             backgroundColor: '#fff',
             marginBottom: 2,
             height: 120,
+            width: wp('100%'),
           }}
         >
           <View style={[styles.centerElement, { width: 60 }]}>
             <TouchableOpacity
               style={[styles.centerElement, { width: 32, height: 32 }]}
-              onPress={() => this.selectHandler(i, item.checked)}
+              //onPress={() => this.selectHandler(i, item.checked)}
             >
-              <Text>tick</Text>
+              <Text style={{ fontSize: 30, fontWeight: 'bold' }}>
+                {index + 1}
+              </Text>
             </TouchableOpacity>
           </View>
           <View
@@ -48,6 +94,7 @@ export default function mycart() {
           >
             <TouchableOpacity onPress={() => {}} style={{ paddingRight: 10 }}>
               <Image
+                source={{ uri: 'data:image/jpeg;base64,' + item.img }}
                 style={[
                   styles.centerElement,
                   { height: 60, width: 60, backgroundColor: '#eeeeee' },
@@ -62,20 +109,20 @@ export default function mycart() {
               }}
             >
               <Text numberOfLines={1} style={{ fontSize: 15 }}>
-                name
+                {item.name}
               </Text>
               <Text numberOfLines={1} style={{ color: '#8f8f8f' }}>
-                color
+                empty
               </Text>
               <Text
                 numberOfLines={1}
                 style={{ color: '#333333', marginBottom: 10 }}
               >
-                totalprice
+                {item.price * item.qty}
               </Text>
               <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
-                  //onPress={() => this.quantityHandler('less', i)}
+                  onPress={() => quantityHandler('less', index)}
                   style={{ borderWidth: 1, borderColor: '#cccccc' }}
                 >
                   <MaterialIcons name="remove" size={22} color="#cccccc" />
@@ -91,10 +138,10 @@ export default function mycart() {
                     fontSize: 13,
                   }}
                 >
-                  quantity
+                  {item.qty}
                 </Text>
                 <TouchableOpacity
-                  // onPress={() => this.quantityHandler('more', i)}
+                  onPress={() => quantityHandler('more', index)}
                   style={{ borderWidth: 1, borderColor: '#cccccc' }}
                 >
                   <MaterialIcons name="add" size={22} color="#cccccc" />
@@ -105,13 +152,77 @@ export default function mycart() {
           <View style={[styles.centerElement, { width: 60 }]}>
             <TouchableOpacity
               style={[styles.centerElement, { width: 32, height: 32 }]}
-              onPress={() => {}}
+              onPress={() => {
+                pickfood.splice(index, 1)
+                onRefresh()
+              }}
             >
               <Ionicons name="md-trash" size={25} color="#ee4d2d" />
             </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
+      </View>
+    )
+  }
+  const order = () => {
+    try {
+      fetch('http://' + ipaddress + '/fypapi/api/order/addorders', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          odate: date,
+          deliverydate: date,
+          otime: time,
+          status: 'pending',
+          Totalbill: total,
+          cid: user.u_id,
+        }),
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          orderdetail(json)
+        })
+        .catch((error) => alert(error)),
+        alert('saved')
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  function orderdetail(json) {
+    for (let i = 0; i < pickfood.length; i++) {
+      try {
+        fetch('http://' + ipaddress + '/fypapi/api/order/', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            oid: json,
+            fid: pickfood[i].id,
+            foodqantity: pickfood[i].qty,
+          }),
+        })
+        alert('saved')
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    return
+  }
+  return (
+    <View style={{ flex: 1, backgroundColor: '#f6f6f6' }}>
+      <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        data={pickfood}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item, index }) => <Text>{tabledata(item, index)}</Text>}
+      />
       <View
         style={{
           backgroundColor: '#fff',
@@ -167,7 +278,7 @@ export default function mycart() {
               alignItems: 'center',
             }}
           >
-            <Text>Select All</Text>
+            <Text></Text>
             <View
               style={{
                 flexDirection: 'row',
@@ -176,7 +287,7 @@ export default function mycart() {
               }}
             >
               <Text style={{ color: '#8f8f8f' }}>SubTotal: </Text>
-              <Text></Text>
+              <Text>{total}</Text>
             </View>
           </View>
         </View>
@@ -193,21 +304,67 @@ export default function mycart() {
             style={[
               styles.centerElement,
               {
-                backgroundColor: '#0faf9a',
+                backgroundColor: '#1c313a',
                 width: 100,
                 height: 25,
                 borderRadius: 5,
               },
             ]}
-            onPress={() => console.log('test')}
+            onPress={() => {
+              if (cart.length === 0) {
+                alert('there is no food in a cart')
+              } else {
+                order()
+                setCart([])
+              }
+            }}
           >
-            <Text style={{ color: '#ffffff' }}>Checkout</Text>
+            <Text style={{ color: '#ffffff' }}>Place Order</Text>
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* <TouchableOpacity
+          style={styles.btnbox}
+          onPress={() => {
+            if (cart.length === 0) {
+              alert('there is no food in a cart')
+            } else {
+              order()
+              setCart([])
+            }
+          }}
+        >
+          <Text style={styles.btntext}>Order</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btnbox}>
+          <Text style={styles.btntext}>Total Bill</Text>
+        </TouchableOpacity> */}
     </View>
   )
 }
 const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+  btntext: {
+    textAlign: 'center',
+    fontSize: 20,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  btnbox: {
+    backgroundColor: '#1c313a',
+    width: 300,
+    margin: 10,
+    marginLeft: 10,
+    borderRadius: 25,
+    paddingVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
   centerElement: { justifyContent: 'center', alignItems: 'center' },
 })
+
+export default Screen

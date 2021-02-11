@@ -18,6 +18,20 @@ import { Card, Title, Paragraph, Searchbar, Divider } from 'react-native-paper'
 export default function pickup({ navigation, route }) {
   const item = route.params.paramkey
   console.log(item)
+  const statusupdate = (item) => {
+    fetch('http://' + ipaddress + '/fypapi/api/deliveryboy/updateorderstatus', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        oid: item.oid,
+        status: 'pickup',
+      }),
+    })
+    navigation.navigate('PICKUPDETAIL', { paramkey: item })
+  }
   return (
     <View style={styles.mainConatinerStyle}>
       <Card style={{ margin: 20 }}>
@@ -25,7 +39,11 @@ export default function pickup({ navigation, route }) {
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('resturantmap', {
-                paramkey: { lat: item.rclattitude, long: item.rclongitude },
+                paramkey: {
+                  lat: parseFloat(item.rclattitude),
+                  long: parseFloat(item.rclongitude),
+                  title: 'Resturant',
+                },
               })
             }
           >
@@ -54,7 +72,12 @@ export default function pickup({ navigation, route }) {
           <Paragraph></Paragraph>
           <Paragraph></Paragraph>
           <TouchableOpacity style={{ marginTop: 30 }}>
-            <Button title="pickup" />
+            <Button
+              title="pickup"
+              onPress={() =>
+                navigation.navigate('DROPOFFDETAIL', { paramkey: item })
+              }
+            />
           </TouchableOpacity>
         </Card.Content>
       </Card>

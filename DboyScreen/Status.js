@@ -26,11 +26,10 @@ export default function status({ navigation }) {
   }, [])
   setTimeout(() => {
     setLoading(false)
-  }, 4000)
+  }, 6000)
   if (isLoading) {
     return <ActivityIndicator size="large" color={'blue'} />
   }
-  console.log(data)
   const statusupdate = (action, id) => {
     if (action == 'ready') {
       fetch('http://' + ipaddress + '/fypapi/api/deliveryboy/statsupdate', {
