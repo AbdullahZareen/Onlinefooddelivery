@@ -32,7 +32,6 @@ export default function orderfood({ route }) {
       })
       .catch((error) => alert(error))
   }, [])
-  console.log(data)
 
   return (
     <View style={styles.container}>
@@ -60,7 +59,7 @@ export default function orderfood({ route }) {
 
                 <Right>
                   <Button transparent>
-                    <Text>View</Text>
+                    <Text>Repeat</Text>
                   </Button>
                 </Right>
               </ListItem>

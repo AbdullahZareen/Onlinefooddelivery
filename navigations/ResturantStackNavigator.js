@@ -11,6 +11,7 @@ import CurrentOrders from '../ResturantScreen/Currentorder'
 import ProfileScreen from '../ResturantScreen/ProfileScreen'
 import UpdateProfile from '../ResturantScreen/UpdateProfile'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { Badge } from 'react-native-paper'
 
 const Stack = createStackNavigator()
 
@@ -48,18 +49,21 @@ const ResturantStackNavigator = ({ navigation }) => {
           ),
           headerTitle: ' Home',
           headerRight: (props) => (
-            <TouchableOpacity>
-              <Image
-                source={require('../components/images/dishicon.png')}
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 40 / 2,
-                  marginLeft: 15,
-                  paddingRight: 10,
-                }}
-              />
-            </TouchableOpacity>
+            <View>
+              <TouchableOpacity style={{ paddingRight: 10, paddingBottom: 20 }}>
+                <Badge></Badge>
+
+                <Image
+                  source={require('../components/images/dishicon.png')}
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 40 / 2,
+                    marginLeft: 15,
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
           ),
         }}
       />

@@ -16,7 +16,7 @@ const Screen = ({ navigation }) => {
           tabStyle={{ backgroundColor: '#fff' }}
           activeTabStyle={{ backgroundColor: '#fff' }}
         >
-          <Tab1 />
+  <Tab1 />
         </Tab>
 
         <Tab

@@ -328,6 +328,37 @@ const Screen = () => {
               }
             }}
           >
+            <Text style={{ color: '#ffffff' }}>ChangLocation</Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            height: 32,
+            paddingRight: 20,
+            alignItems: 'center',
+          }}
+        >
+          <TouchableOpacity
+            style={[
+              styles.centerElement,
+              {
+                backgroundColor: '#1c313a',
+                width: 100,
+                height: 25,
+                borderRadius: 5,
+              },
+            ]}
+            onPress={() => {
+              if (cart.length === 0) {
+                alert('there is no food in a cart')
+              } else {
+                order()
+                setCart([])
+              }
+            }}
+          >
             <Text style={{ color: '#ffffff' }}>Place Order</Text>
           </TouchableOpacity>
         </View>

@@ -13,11 +13,12 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { useUser } from '../Context/UserContext'
-
+import { useCart } from '../Context/CartContext'
 export default function fooditem({ navigation, route }) {
   const [isLoading, setLoading] = useState(true)
   const [fooddata, setfoodData] = useState([])
   const id = route.params.paramkey
+  const { cart, setcart } = useCart()
   const { user, setUser, ipaddress } = useUser()
   useEffect(() => {
     fetch('http://' + ipaddress + '/fypapi/api/fooditem/getfood?id=' + id + '')
@@ -26,13 +27,24 @@ export default function fooditem({ navigation, route }) {
         setfoodData(json)
       })
       .catch((error) => alert(error))
+    return () => setfoodData(null)
   }, [])
+
+  const cartcheck = (item) => {
+    for (let i = 0; i < cart.length; i++) {
+      if (cart[i].name === item.fname) {
+        alert('Product already exist in cart')
+        return
+      }
+    }
+    navigation.navigate('BillCal', { paramkey: item })
+  }
 
   const carddata = (item) => {
     return (
       <View style={{}}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('BillCal', { paramkey: item })}
+          onPress={() => cartcheck(item)}
           style={{
             borderRadius: 5,
             borderColor: 'black',
@@ -47,13 +59,13 @@ export default function fooditem({ navigation, route }) {
             <Card.Content>
               <Title>{item.fname}</Title>
               <Paragraph>Price :{item.fprice}</Paragraph>
-              <Paragraph>Type {item.ftype}</Paragraph>
             </Card.Content>
           </Card>
         </TouchableOpacity>
       </View>
     )
   }
+
   return (
     <View style={styles.container}>
       <Text

@@ -110,7 +110,7 @@ const HomeStackNavigator = ({ navigation }) => {
         name="showschadule"
         component={showschadule}
         options={{
-          headerTitle: 'Week Schadule',
+          headerTitle: 'Week Schedule',
           headerRight: () => (
             <TouchableOpacity>
               <Switch

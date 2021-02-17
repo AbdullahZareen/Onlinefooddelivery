@@ -20,7 +20,7 @@ const Screen = () => {
       })
       .catch((error) => alert(error))
   }, [])
-  console.log(data)
+  //console.log(data)
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}></View>
@@ -36,10 +36,9 @@ const Screen = () => {
             <Text style={styles.name}>{data.rcname}</Text>
             <Text style={styles.name}>{data.rcemail}</Text>
             <Text style={styles.info}>{data.rcnumber}</Text>
-            <Text style={styles.description}>
-              Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum
-              electram expetendis, omittam deseruisse consequuntur ius an,
-            </Text>
+            <Text style={styles.info}>{data.Category}</Text>
+            <Text style={styles.description}>{data.rcaddress}</Text>
+            <Text style={styles.description}></Text>
           </View>
         ) : (
           <Text></Text>

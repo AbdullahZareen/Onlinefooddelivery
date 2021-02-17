@@ -17,6 +17,7 @@ import { Card, Title, Paragraph, Searchbar, Divider } from 'react-native-paper'
 
 export default function Delivered({ navigation, route }) {
   const item = route.params.paramkey
+  const { ipaddress } = useUser()
   console.log(item)
   var date =
     new Date().getFullYear() +
@@ -27,17 +28,22 @@ export default function Delivered({ navigation, route }) {
   var time = new Date().getHours() + ':' + new Date().getMinutes()
 
   const statusupdate = (item) => {
-    fetch('http://' + ipaddress + '/fypapi/api/deliveryboy/updateorderstatus', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        oid: item.oid,
-        status: 'Delivered',
-      }),
-    })
+    fetch(
+      'http://' + ipaddress + '/fypapi/api/deliveryboy/updatedeliveredstatus',
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          oid: item.oid,
+          status: 'Delivered',
+          opickuptime: time,
+          Delivereddate: date,
+        }),
+      }
+    )
     navigation.navigate('PICKUPDETAIL', { paramkey: item })
   }
   return (
@@ -84,7 +90,13 @@ export default function Delivered({ navigation, route }) {
           <Paragraph></Paragraph>
           <Paragraph></Paragraph>
           <TouchableOpacity style={{ marginTop: 30 }}>
-            <Button title="Delivered" />
+            <Button
+              title="Delivered"
+              onPress={() => {
+                alert('order successfully Delievered')
+                navigation.navigate('order')
+              }}
+            />
           </TouchableOpacity>
         </Card.Content>
       </Card>

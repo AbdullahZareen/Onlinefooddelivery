@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen'
+import {
   View,
   Text,
   StyleSheet,
@@ -132,6 +136,6 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     backgroundColor: '#fff',
-    width: 350,
+    width: wp('100%'),
   },
 })

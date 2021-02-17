@@ -23,10 +23,11 @@ export default function status({ navigation }) {
         setData(json[0])
       })
       .catch((error) => alert(error))
+      .finally(() => setLoading(false))
   }, [])
-  setTimeout(() => {
-    setLoading(false)
-  }, 6000)
+  // setTimeout(() => {
+  //   setLoading(false)
+  // }, 7000)
   if (isLoading) {
     return <ActivityIndicator size="large" color={'blue'} />
   }

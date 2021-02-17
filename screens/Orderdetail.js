@@ -30,9 +30,12 @@ const Screen = ({ navigation }) => {
       .then((response) => response.json())
       .then((json) => {
         setdata(json)
+        const total = json.reduce((t, i) => t + i.Totalbill, 0)
+        console.log('totalbill', total)
       })
       .catch((error) => alert(error))
   }, [isFocused])
+
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>

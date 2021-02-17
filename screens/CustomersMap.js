@@ -22,54 +22,7 @@ export default function App() {
   var [latt, setlatt] = useState(33.6495176)
   var [longi, setlongi] = useState(73.0702265)
   const [errorMsg, setErrorMsg] = useState(null)
-  const [data, setdata] = useState()
-  const isFocused = useIsFocused()
-  useEffect(() => {
-    fetch('http://' + ipaddress + '/fypapi/api/resturant/closeresturant')
-      .then((response) => response.json())
-      .then((json) => {
-        setdata(json)
-      })
-      .catch((error) => alert(error))
-    return setdata(null)
-  }, [isFocused])
 
-  // useEffect(() => {
-  //   ;(async () => {
-  //     let { status } = await Location.requestPermissionsAsync()
-  //     if (status !== 'granted') {
-  //       setErrorMsg('Permission to access location was denied')
-  //       return
-  //     }
-
-  //     let location = await Location.getCurrentPositionAsync({})
-  //     setlongi(JSON.stringify(location.coords.longitude))
-  //     setlatt(JSON.stringify(location.coords.latitude))
-  //     setLocation(location)
-  //   })()
-  // }, [])
-  const radius = (item, index) => {
-    status = getDistance(
-      {
-        latitude: parseFloat(item.rclattitude),
-        longitude: parseFloat(item.rclongitude),
-      },
-      {
-        latitude: 33.64136078837483,
-        longitude: 73.0642405897379,
-      },
-      5000
-    )
-    if (status == true) {
-      console.log('condition true for ', item.rcname)
-    } else {
-      console.log('condition falsed for ', item.rcname)
-      data.splice(index, 1)
-    }
-    console.log('status  is this', status)
-    console.log(data)
-    onRefresh()
-  }
   const onRefresh = React.useCallback(() => {
     setRefreshing(true)
 
@@ -80,12 +33,6 @@ export default function App() {
       setTimeout(resolve, timeout)
     })
   }
-  let text = 'Waiting.' + (0 + 1) + ''
-  // if (errorMsg) {
-  //   text = errorMsg
-  // } else if (location) {
-  //   text = JSON.stringify(location.coords.latitude)
-  // }
   return (
     <View style={styles.container}>
       <MapView
@@ -111,16 +58,6 @@ export default function App() {
           title={'title'}
           description={'description'}
         />
-        {/* <Circle
-          center={{
-            latitude: latt,
-            longitude: longi,
-          }}
-          radius={5000}
-          strokeWidth={2}
-          strokeColor="aqua"
-          fillColor={'brown'}
-        /> */}
       </MapView>
     </View>
   )

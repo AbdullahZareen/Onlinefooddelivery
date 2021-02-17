@@ -15,10 +15,14 @@ import { useSchedule } from '../Context/Schedulecontext'
 import { useUser } from '../Context/UserContext'
 import { LogBox } from 'react-native'
 
+LogBox.ignoreAllLogs()
+
 const Screen = ({ navigation }) => {
   const [day, setDay] = useState('')
   const [meal, setMeal] = useState('')
   const [time, setTime] = useState('')
+  const [ddate, setdddate] = useState('')
+
   const { menu, setMenu } = useSchedule()
   const { pickfood, setPickfood } = useSchedule()
   const { user, ipaddress } = useUser()
@@ -40,13 +44,63 @@ const Screen = ({ navigation }) => {
     setDatePickerVisibility(false)
   }
 
-  const handleConfirm = (time) => {
-    const t = new Date(time)
-    console.log('A date has been picked: ', t.toLocaleTimeString())
+  const handleConfirm = (date) => {
+    const t = new Date(date)
+    let d = t.getDay()
+
     hideDatePicker()
+    setdddate(t.toLocaleDateString())
     setTime(t.toLocaleTimeString())
+    if (d === 0) {
+      setDay('sunday')
+    } else if (d === 1) {
+      setDay('monday')
+    } else if (d === 2) {
+      setDay('tuesday')
+    } else if (d === 3) {
+      setDay('wednesday')
+    } else if (d === 4) {
+      setDay('thursday')
+    } else if (d === 5) {
+      setDay('friday')
+    } else if (d === 6) {
+      setDay('saturday')
+    }
   }
-  function postschedule() {
+
+  const postScheduleorder = () => {
+    try {
+      fetch('http://' + ipaddress + '/fypapi/api/order/addorders', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          odate: date,
+          deliverydate: ddate,
+          otime: time,
+          status: 'pending',
+          Totalbill: 1000,
+          cid: user.u_id,
+          SchduleStatus: true,
+          activatestatus: true,
+          schday: day,
+        }),
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          ScheduleFood(json)
+          postschedule(json)
+        })
+        .catch((error) => alert(error))
+    } catch (e) {
+      console.log(e)
+    }
+    navigation.navigate('showschadule')
+    setPickfood([])
+  }
+  function postschedule(json) {
     for (let i = 0; i < pickfood.length; i++) {
       try {
         let result = fetch(
@@ -64,49 +118,18 @@ const Screen = ({ navigation }) => {
               quantity: pickfood[i].qty,
               fid: pickfood[i].fid,
               cid: user.u_id,
+              activatestatus: 1,
+              oid: json,
             }),
           }
         )
           .then((response) => response.json())
           .then((json) => {
-            alert(json)
+            alert('schedule save')
           })
       } catch (e) {
         console.log(e)
       }
-    }
-
-    postScheduleorder()
-    navigation.navigate('showschadule')
-    setPickfood([])
-  }
-
-  const postScheduleorder = () => {
-    try {
-      fetch('http://' + ipaddress + '/fypapi/api/order/addorders', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          odate: date,
-          deliverydate: '2021-2-12',
-          otime: time,
-          status: 'pending',
-          Totalbill: 1000,
-          cid: user.u_id,
-          SchduleStatus: true,
-          activatestatus: true,
-        }),
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          ScheduleFood(json)
-        })
-        .catch((error) => alert(error))
-    } catch (e) {
-      console.log(e)
     }
   }
   function ScheduleFood(json) {
@@ -124,7 +147,7 @@ const Screen = ({ navigation }) => {
             foodqantity: pickfood[i].qty,
           }),
         })
-        alert('saved')
+        alert('foo detail saves')
       } catch (e) {
         console.log(e)
       }
@@ -132,9 +155,9 @@ const Screen = ({ navigation }) => {
     return
   }
   return (
-    <View style={{ flex: 1, backgroundColor: '#f6f6f6' }}>
+    <View style={{ flex: 1, backgroundColor: '#f6f6f6', padding: 20 }}>
       <ScrollView>
-        <View style={{ flexDirection: 'row' }}>
+        {/* <View style={{ flexDirection: 'row' }}>
           <Text style={styles.text}>Week End</Text>
           <Switch
             trackColor={{ false: '#767577', true: '#81b0ff' }}
@@ -190,7 +213,7 @@ const Screen = ({ navigation }) => {
             dropDownStyle={{ backgroundColor: '#fafafa' }}
             onChangeItem={(day) => setDay(day.value)}
           />
-        )}
+        )} */}
 
         <Text style={styles.text}>Meal</Text>
         <DropDownPicker
@@ -211,12 +234,24 @@ const Screen = ({ navigation }) => {
           dropDownStyle={{ backgroundColor: '#fafafa' }}
           onChangeItem={(meal) => setMeal(meal.value)}
         />
+        <Text style={styles.text}>
+          PickedTime{'\t\t\t\t\t\t\t\t\t'}
+          {time}
+        </Text>
+        <Text style={styles.text}>
+          PickedDate{'\t\t\t\t\t\t\t\t\t'}
+          {ddate}
+        </Text>
+        <Text
+          style={{ textAlign: 'center', fontSize: 14, fontWeight: 'bold' }}
+        ></Text>
         <TouchableOpacity onPress={showDatePicker} style={styles.button}>
-          <Text style={styles.buttonText}>TIMEPICKER</Text>
+          <Text style={styles.buttonText}>DateTIMEPICKER</Text>
         </TouchableOpacity>
+
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
-          mode="time"
+          mode="datetime"
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
         />
@@ -248,8 +283,8 @@ const Screen = ({ navigation }) => {
                 alignItems: 'center',
               }}
             >
-              <Text style={{ color: '#8f8f8f' }}>SubTotal: </Text>
-              <Text>1000</Text>
+              {/* <Text style={{ color: '#8f8f8f' }}>SubTotal: </Text>
+              <Text>1000</Text> */}
             </View>
           </View>
         </View>
@@ -317,7 +352,7 @@ const Screen = ({ navigation }) => {
               if (pickfood.length < 1) {
                 alert('choose food')
               } else {
-                postschedule()
+                postScheduleorder()
               }
             }}
           >
@@ -361,6 +396,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     fontWeight: 'bold',
+    padding: 15,
   },
   btnbox: {
     width: 350,

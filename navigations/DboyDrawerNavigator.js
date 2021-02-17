@@ -35,6 +35,10 @@ export default function MyDrawerNavigator({ navigation }) {
               label="Orders"
               onPress={() => props.navigation.navigate('order')}
             />
+            <DrawerItem
+              label="AcceptOrders"
+              onPress={() => props.navigation.navigate('ACCEPTEDORDER')}
+            />
           </DrawerContentScrollView>
         )
       }}

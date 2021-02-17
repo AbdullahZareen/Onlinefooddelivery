@@ -13,12 +13,18 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen'
-const Screen = ({ navigation }) => {
+const AcceptedOrderScreen = ({ navigation }) => {
   const [data, setdata] = useState()
   const [food, setfood] = useState()
   const { ipaddress, user } = useUser()
   useEffect(() => {
-    fetch('http://' + ipaddress + '/fypapi/api/deliveryboy/dboyordersshow')
+    fetch(
+      'http://' +
+        ipaddress +
+        '/fypapi/api/deliveryboy/dboyacceptordershow?id=' +
+        user.u_id +
+        ''
+    )
       .then((response) => response.json())
       .then((json) => {
         setdata(json)
@@ -35,10 +41,11 @@ const Screen = ({ navigation }) => {
       },
       body: JSON.stringify({
         oid: item.oid,
-        status: 'accepted',
+        status: 'picked',
         did: user.u_id,
       }),
     })
+    navigation.navigate('PICKUPDETAIL', { paramkey: item })
   }
   console.log(data)
   return (
@@ -51,7 +58,7 @@ const Screen = ({ navigation }) => {
           <FlatList
             data={data}
             keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item, index }) => (
+            renderItem={({ item }) => (
               <Card style={{ margin: 20 }}>
                 <Card.Content>
                   <Title>
@@ -59,20 +66,26 @@ const Screen = ({ navigation }) => {
                     {item.oid}
                   </Title>
                   <Paragraph>
-                    {'Resturant Name :'}
+                    {'Name :'}
                     {item.rcname}
                   </Paragraph>
-                  <Paragraph>
-                    {'Resturant Address :'}
-                    {item.rcaddress}
-                  </Paragraph>
-                  <Button
-                    title="Accept"
-                    onPress={() => {
-                      statusupdate(item)
-                      //data.splice, 1)
-                    }}
-                  />
+                  <View style={{ paddingBottom: 10 }}>
+                    <Button
+                      title="PickupDetail"
+                      disabled={item.status !== 'picked' ? false : true}
+                      onPress={() =>
+                        navigation.navigate('PICKUPDETAIL', { paramkey: item })
+                      }
+                    />
+                  </View>
+                  <View style={{ paddingBottom: 5 }}>
+                    <Button
+                      title="DropoffDetail"
+                      onPress={() =>
+                        navigation.navigate('DROPOFFDETAIL', { paramkey: item })
+                      }
+                    />
+                  </View>
                 </Card.Content>
               </Card>
             )}
@@ -91,4 +104,4 @@ const styles = StyleSheet.create({
     height: hp('100%'),
   },
 })
-export default Screen
+export default AcceptedOrderScreen

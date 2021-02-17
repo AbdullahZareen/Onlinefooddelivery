@@ -17,20 +17,26 @@ import { Card, Title, Paragraph, Searchbar, Divider } from 'react-native-paper'
 
 export default function pickup({ navigation, route }) {
   const item = route.params.paramkey
+  var time = new Date().getHours() + ':' + new Date().getMinutes()
+  const { ipaddress } = useUser()
   console.log(item)
   const statusupdate = (item) => {
-    fetch('http://' + ipaddress + '/fypapi/api/deliveryboy/updateorderstatus', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        oid: item.oid,
-        status: 'pickup',
-      }),
-    })
-    navigation.navigate('PICKUPDETAIL', { paramkey: item })
+    fetch(
+      'http://' + ipaddress + '/fypapi/api/deliveryboy/updatepickupstatus',
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          oid: item.oid,
+          status: 'pickup',
+          opickuptime: time,
+        }),
+      }
+    )
+    navigation.navigate('DROPOFFDETAIL', { paramkey: item })
   }
   return (
     <View style={styles.mainConatinerStyle}>
@@ -72,12 +78,7 @@ export default function pickup({ navigation, route }) {
           <Paragraph></Paragraph>
           <Paragraph></Paragraph>
           <TouchableOpacity style={{ marginTop: 30 }}>
-            <Button
-              title="pickup"
-              onPress={() =>
-                navigation.navigate('DROPOFFDETAIL', { paramkey: item })
-              }
-            />
+            <Button title="pickup" onPress={() => statusupdate(item)} />
           </TouchableOpacity>
         </Card.Content>
       </Card>

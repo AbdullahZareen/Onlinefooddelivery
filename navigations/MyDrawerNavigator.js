@@ -15,10 +15,10 @@ import { NavigationContainer } from '@react-navigation/native'
 import Orderdetail from '../screens/Orderdetail'
 const Drawer = createDrawerNavigator()
 
-export default function MyDrawerNavigator() {
+export default function MyDrawerNavigator({ navigation }) {
   const { setUser, setIsLoggedIn } = useUser()
 
-  const logoutAction = async () => {
+  const logoutAction = async ({ navigation }) => {
     await AsyncStorage.removeItem('user')
     setUser(null)
     setIsLoggedIn(false)

@@ -39,6 +39,7 @@ export default function Rating({ route }) {
           {/*To show the rating selected*/}
           {starCount} / 5
         </Text>
+        <Button title="Submit" color="#008b8b" onPress={() => updateRating()} />
       </View>
     </View>
   )

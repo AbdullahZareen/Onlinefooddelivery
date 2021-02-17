@@ -43,7 +43,7 @@ export default function fooditem({ navigation, route }) {
             <Card.Content style={{}}>
               <Title>{item.name}</Title>
               <Paragraph>Price :{item.price}</Paragraph>
-              <Paragraph>Type {item.type}</Paragraph>
+              <Paragraph>{item.rcname}</Paragraph>
               <Paragraph>rating:4.9</Paragraph>
             </Card.Content>
           </Card>
@@ -54,8 +54,6 @@ export default function fooditem({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <Searchbar style={{ borderRadius: 25, width: 250 }} />
-
       <Text
         style={{
           fontWeight: 'bold',
